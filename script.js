@@ -12,14 +12,14 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
     })
     .then(res => res.text())
     .then(result => {
-      statusMessage.textContent = result;
-      statusMessage.className = "success";
-      statusMessage.style.display = "block";
-      form.reset();
+      if (result.toLowerCase().includes("berhasil")) {
+        showToast("✅ Data berhasil disimpan", "success");
+        form.reset();
+      } else {
+        showToast("⚠️ Gagal menyimpan data", "error");
+      }
     })
     .catch(error => {
-      statusMessage.textContent = "Gagal mengirim data: " + error;
-      statusMessage.className = "error";
-      statusMessage.style.display = "block";
+      showToast("❌ Terjadi kesalahan: " + error.message, "error");
     });
   });
