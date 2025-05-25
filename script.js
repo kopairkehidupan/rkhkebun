@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Toggle sidebar manual
   btnToggle.addEventListener("click", () => {
-    console.log("Hamburger diklik");
+    console.log("Tombol hamburger diklik");
     sidebar.classList.toggle("active");
     content.classList.toggle("sidebar-open");
   });
