@@ -63,3 +63,21 @@ button:hover {
   border-radius: 6px;
   font-size: 14px;
 }
+
+#status-message {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  display: none;
+}
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
