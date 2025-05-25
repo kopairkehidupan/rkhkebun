@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Pekerjaan Kebun</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Form Pekerjaan Harian</h1>
+    <form id="form-pekerjaan">
+      <div class="form-grid">
+        <label>Kebun</label>
+        <input type="text" name="kebun" required />
+
+        <label>Divisi</label>
+        <input type="text" name="divisi" required />
+
+        <label>Tanggal</label>
+        <input type="date" name="tanggal" required />
+
+        <label>Jenis Pekerjaan</label>
+        <input type="text" name="jenis_pekerjaan" required />
+
+        <label>Blok</label>
+        <input type="text" name="blok" required />
+
+        <label>Luas (Ha)</label>
+        <input type="number" step="0.01" name="luas" required />
+
+        <label>Volume Pekerjaan</label>
+        <input type="text" name="volume" required />
+
+        <label>HK</label>
+        <input type="number" name="hk" required />
+
+        <label>Bahan</label>
+        <input type="text" name="bahan" />
+
+        <label>Pengawasan</label>
+        <input type="text" name="pengawasan" />
+      </div>
+      <button type="submit">Simpan</button>
+    </form>
+    <div id="output"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
