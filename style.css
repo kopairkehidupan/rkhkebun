@@ -168,17 +168,17 @@ button:hover {
   }
 
   .hamburger {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      font-size: 26px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      display: block;
-      z-index: 1100;
-    }
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: block;
+    z-index: 2000; /* lebih tinggi dari sidebar (1000) */
+  }
 
   .content {
     padding: 30px 15px;
