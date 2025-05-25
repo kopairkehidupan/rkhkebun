@@ -174,3 +174,51 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* Hamburger button */
+.hamburger {
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: none; /* default disembunyikan */
+  margin-bottom: 15px;
+}
+
+/* Sidebar toggle di mobile */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    background-color: #34495e;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* Tampilkan tombol hamburger */
+  .hamburger {
+    display: block;
+  }
+
+  /* Konten utama full width saat sidebar disembunyikan */
+  .content {
+    padding: 30px 15px;
+    transition: margin-left 0.3s ease;
+    margin-left: 0;
+  }
+
+  /* Konten utama bergeser saat sidebar muncul */
+  .content.sidebar-open {
+    margin-left: 220px;
+  }
+}
