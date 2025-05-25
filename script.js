@@ -23,3 +23,13 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
       showToast("❌ Terjadi kesalahan: " + error.message, "error");
     });
   });
+
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = "toast show " + type;
+
+  setTimeout(() => {
+    toast.className = "toast " + type; // reset visibility
+  }, 3000); // 3 detik
+}
