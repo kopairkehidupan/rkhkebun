@@ -7,62 +7,67 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="navbar-brand">🌿 RKH Kebun</div>
-    <nav class="nav-links">
-      <a href="#" id="menu-form" class="active">Form RKH</a>
-      <a href="#" id="menu-laporan">Tampilkan Laporan</a>
-    </nav>
-  </header>
+  <div class="wrapper">
+    <aside class="sidebar">
+      <h2 class="logo">🌿 RKH Kebun</h2><button id="btn-toggle" class="hamburger">☰</button>
+      <h2>Menu</h2>
+      <nav>
+        <ul>
+          <li><a href="#" id="menu-form" class="active">Form RKH</a></li>
+          <li><a href="#" id="menu-laporan">Tampilkan Laporan</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-  <main class="content">
-    <!-- Form RKH -->
-    <section id="form-section" class="section-active">
-      <h1>Form Rencana Kerja Harian (RKH)</h1>
-      <form id="form-pekerjaan">
-        <div class="form-grid">
-          <label for="kebun">Kebun</label>
-          <input id="kebun" type="text" name="kebun" required />
+    <main class="content">
+      <!-- Form RKH -->
+      <section id="form-section" class="section-active">
+        <h1>Form Rencana Kerja Harian (RKH)</h1>
+        <form id="form-pekerjaan">
+          <div class="form-grid">
+            <label for="kebun">Kebun</label>
+            <input id="kebun" type="text" name="kebun" required />
 
-          <label for="divisi">Divisi</label>
-          <input id="divisi" type="text" name="divisi" required />
+            <label for="divisi">Divisi</label>
+            <input id="divisi" type="text" name="divisi" required />
 
-          <label for="tanggal">Tanggal</label>
-          <input id="tanggal" type="date" name="tanggal" required />
+            <label for="tanggal">Tanggal</label>
+            <input id="tanggal" type="date" name="tanggal" required />
 
-          <label for="jenis_pekerjaan">Jenis Pekerjaan</label>
-          <input id="jenis_pekerjaan" type="text" name="jenis_pekerjaan" required />
+            <label for="jenis_pekerjaan">Jenis Pekerjaan</label>
+            <input id="jenis_pekerjaan" type="text" name="jenis_pekerjaan" required />
 
-          <label for="blok">Blok</label>
-          <input id="blok" type="text" name="blok" required />
+            <label for="blok">Blok</label>
+            <input id="blok" type="text" name="blok" required />
 
-          <label for="luas">Luas (Ha)</label>
-          <input id="luas" type="number" step="0.01" name="luas" required />
+            <label for="luas">Luas (Ha)</label>
+            <input id="luas" type="number" step="0.01" name="luas" required />
 
-          <label for="volume">Volume Pekerjaan</label>
-          <input id="volume" type="text" name="volume" required />
+            <label for="volume">Volume Pekerjaan</label>
+            <input id="volume" type="text" name="volume" required />
 
-          <label for="hk">HK</label>
-          <input id="hk" type="number" name="hk" required />
+            <label for="hk">HK</label>
+            <input id="hk" type="number" name="hk" required />
 
-          <label for="bahan">Bahan</label>
-          <input id="bahan" type="text" name="bahan" />
+            <label for="bahan">Bahan</label>
+            <input id="bahan" type="text" name="bahan" />
 
-          <label for="pengawasan">Pengawasan</label>
-          <input id="pengawasan" type="text" name="pengawasan" />
+            <label for="pengawasan">Pengawasan</label>
+            <input id="pengawasan" type="text" name="pengawasan" />
+          </div>
+          <button type="submit">Buat</button>
+        </form>
+      </section>
+
+      <!-- Laporan -->
+      <section id="laporan-section" style="display: none;">
+        <h1>Laporan RKH</h1>
+        <div id="laporan-container">
+          <!-- Data laporan akan muncul di sini -->
         </div>
-        <button type="submit">Buat</button>
-      </form>
-    </section>
-
-    <!-- Laporan -->
-    <section id="laporan-section" style="display: none;">
-      <h1>Laporan RKH</h1>
-      <div id="laporan-container">
-        <!-- Data laporan akan muncul di sini -->
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
+  </div>
 
   <div id="toast" class="toast">
     <div class="toast-icon">✔️</div>
