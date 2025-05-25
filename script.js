@@ -22,12 +22,4 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
       statusMessage.className = "error";
       statusMessage.style.display = "block";
     });
-    .then(res => res.text())
-    .then(result => {
-      alert(result);
-      form.reset();
-    })
-    .catch(error => {
-      alert("Gagal mengirim data: " + error);
-    });
   });
