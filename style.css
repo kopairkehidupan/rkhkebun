@@ -64,20 +64,37 @@ button:hover {
   font-size: 14px;
 }
 
-#status-message {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 6px;
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #2ecc71; /* Default: hijau sukses */
+  color: white;
   text-align: center;
-  font-weight: bold;
-  display: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  position: fixed;
+  z-index: 100;
+  bottom: 30px;
+  left: 50%;
+  font-size: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.5s ease, bottom 0.5s ease;
 }
-.success {
-  background-color: #d4edda;
-  color: #155724;
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px;
 }
-.error {
-  background-color: #f8d7da;
-  color: #721c24;
+
+.toast.success {
+  background-color: #2ecc71; /* hijau */
 }
+
+.toast.error {
+  background-color: #e74c3c; /* merah */
+}
+
 
