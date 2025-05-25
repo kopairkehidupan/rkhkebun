@@ -1,3 +1,44 @@
+// Fungsi untuk menampilkan toast
+function showToast(message, type = "success") {
+  const toast = document.getElementById("toast");
+  const icon = toast.querySelector(".toast-icon");
+  const msg = toast.querySelector(".toast-message");
+
+  msg.textContent = message;
+  icon.textContent = type === "success" ? "✔️" : "❌";
+  toast.className = "toast show " + type;
+
+  setTimeout(() => {
+    toast.className = "toast " + type;
+  }, 5000);
+}
+
+// Navigasi antara form dan laporan
+document.getElementById("menu-form").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("form-section").style.display = "block";
+  document.getElementById("laporan-section").style.display = "none";
+  this.classList.add("active");
+  document.getElementById("menu-laporan").classList.remove("active");
+});
+
+document.getElementById("menu-laporan").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("form-section").style.display = "none";
+  document.getElementById("laporan-section").style.display = "block";
+  this.classList.add("active");
+  document.getElementById("menu-form").classList.remove("active");
+  loadLaporan();
+});
+
+// Fungsi untuk memuat laporan (contoh statis)
+function loadLaporan() {
+  const container = document.getElementById("laporan-container");
+  container.innerHTML = "<p>Memuat data laporan...</p>";
+  // Tambahkan pengambilan data dari Google Sheets jika sudah siap
+}
+
+// Penanganan pengiriman formulir
 document.getElementById("form-pekerjaan").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -22,17 +63,3 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
       showToast("Terjadi kesalahan: " + error.message, "error");
     });
 });
-
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-  const icon = toast.querySelector(".toast-icon");
-  const msg = toast.querySelector(".toast-message");
-
-  msg.textContent = message;
-  icon.textContent = type === "success" ? "✔️" : "❌";
-  toast.className = "toast show " + type;
-
-  setTimeout(() => {
-    toast.className = "toast " + type;
-  }, 5000);
-}
