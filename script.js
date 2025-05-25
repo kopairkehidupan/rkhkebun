@@ -63,3 +63,12 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
       showToast("Terjadi kesalahan: " + error.message, "error");
     });
 });
+
+const btnToggle = document.getElementById("btn-toggle");
+const sidebar = document.querySelector(".sidebar");
+const content = document.querySelector(".content");
+
+btnToggle.addEventListener("click", () => {
+  sidebar.classList.toggle("active");
+  content.classList.toggle("sidebar-open");
+});
