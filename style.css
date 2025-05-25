@@ -3,22 +3,21 @@ body {
 }
 
 .sidebar {
+  width: 220px;
   min-height: 100vh;
-}
-
-.nav-link.active {
-  background-color: #0d6efd !important;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
+    top: 0;
+    left: 0;
     transform: translateX(-200px);
-    transition: transform 0.3s ease;
-    z-index: 1000;
   }
 
-  .sidebar.show {
+  .sidebar.sidebar-visible {
     transform: translateX(0);
   }
 
@@ -28,4 +27,8 @@ body {
     left: 15px;
     z-index: 1101;
   }
+}
+
+.nav-link.active {
+  background-color: #0d6efd !important;
 }
