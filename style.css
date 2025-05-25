@@ -67,34 +67,37 @@ button:hover {
 .toast {
   visibility: hidden;
   position: fixed;
-  top: 50%;
+  top: 60%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 20px);
   background-color: #2ecc71; /* default hijau */
   color: white;
-  padding: 30px 40px;
-  border-radius: 12px;
+  padding: 16px 24px;
+  border-radius: 8px;
   text-align: center;
   z-index: 9999;
   opacity: 0;
-  transition: opacity 0.5s ease;
-  min-width: 300px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  min-width: 220px;
+  max-width: 90%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .toast.show {
   visibility: visible;
   opacity: 1;
+  transform: translate(-50%, 0); /* Slide ke atas */
 }
 
 .toast-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
+  font-size: 24px;
+  margin-bottom: 6px;
+  display: block;
 }
 
 .toast-message {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .toast.success {
@@ -104,5 +107,6 @@ button:hover {
 .toast.error {
   background-color: #e74c3c; /* merah */
 }
+
 
 
