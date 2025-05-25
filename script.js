@@ -31,5 +31,5 @@ function showToast(message, type = "success") {
 
   setTimeout(() => {
     toast.className = "toast " + type; // reset visibility
-  }, 3000); // 3 detik
+  }, 5000); // 5 detik
 }
