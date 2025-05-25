@@ -3,51 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Rencana Kerja Harian</title>
+  <title>Rencana Kerja Harian</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Form Rencana Kerja Harian (RKH)</h1>
-    <form id="form-pekerjaan">
-      <div class="form-grid">
-        <label>Kebun</label>
-        <input type="text" name="kebun" required />
+  <div class="wrapper">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <nav>
+        <ul>
+          <li><a href="#" id="menu-form">Form RKH</a></li>
+          <li><a href="#" id="menu-laporan">Tampilkan Laporan</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-        <label>Divisi</label>
-        <input type="text" name="divisi" required />
+    <main class="content">
+      <section id="form-section">
+        <h1>Form Rencana Kerja Harian (RKH)</h1>
+        <form id="form-pekerjaan">
+          <div class="form-grid">
+            <label>Kebun</label>
+            <input type="text" name="kebun" required />
 
-        <label>Tanggal</label>
-        <input type="date" name="tanggal" required />
+            <label>Divisi</label>
+            <input type="text" name="divisi" required />
 
-        <label>Jenis Pekerjaan</label>
-        <input type="text" name="jenis_pekerjaan" required />
+            <label>Tanggal</label>
+            <input type="date" name="tanggal" required />
 
-        <label>Blok</label>
-        <input type="text" name="blok" required />
+            <label>Jenis Pekerjaan</label>
+            <input type="text" name="jenis_pekerjaan" required />
 
-        <label>Luas (Ha)</label>
-        <input type="number" step="0.01" name="luas" required />
+            <label>Blok</label>
+            <input type="text" name="blok" required />
 
-        <label>Volume Pekerjaan</label>
-        <input type="text" name="volume" required />
+            <label>Luas (Ha)</label>
+            <input type="number" step="0.01" name="luas" required />
 
-        <label>HK</label>
-        <input type="number" name="hk" required />
+            <label>Volume Pekerjaan</label>
+            <input type="text" name="volume" required />
 
-        <label>Bahan</label>
-        <input type="text" name="bahan" />
+            <label>HK</label>
+            <input type="number" name="hk" required />
 
-        <label>Pengawasan</label>
-        <input type="text" name="pengawasan" />
-      </div>
-      <button type="submit">Buat</button>
-    </form>
+            <label>Bahan</label>
+            <input type="text" name="bahan" />
+
+            <label>Pengawasan</label>
+            <input type="text" name="pengawasan" />
+          </div>
+          <button type="submit">Buat</button>
+        </form>
+      </section>
+
+      <section id="laporan-section" style="display: none;">
+        <h1>Laporan RKH</h1>
+        <div id="laporan-container">
+          <!-- Data laporan akan ditampilkan di sini -->
+        </div>
+      </section>
+    </main>
   </div>
+
   <div id="toast" class="toast">
     <div class="toast-icon">✔️</div>
     <div class="toast-message">Data berhasil disimpan</div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
+
