@@ -43,3 +43,5 @@ function showToast(message, type = "success") {
     toast.className = "toast " + type;
   }, 3000);
 }
+showToast("Data berhasil disimpan", "success");
+showToast("Gagal menyimpan data", "error");
