@@ -101,7 +101,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // Anda bisa menambahkan fetch dari Google Sheets jika diperlukan.
   }
 });
-
-if (window.innerWidth > 768) {
-  sidebar.classList.add("active");
-}
