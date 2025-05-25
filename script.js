@@ -1,77 +1,43 @@
 document.addEventListener("DOMContentLoaded", () => {
   const btnToggle = document.getElementById("btn-toggle");
-  const sidebar = document.querySelector(".sidebar");
+  const sidebar = document.getElementById("sidebarMenu");
   const content = document.querySelector(".content");
   const formSection = document.getElementById("form-section");
   const laporanSection = document.getElementById("laporan-section");
-  const navLinks = document.querySelectorAll(".sidebar nav ul li a");
+  const navLinks = document.querySelectorAll(".nav-link");
   const form = document.getElementById("form-pekerjaan");
-  const toast = document.getElementById("toast");
-  const toastIcon = toast.querySelector(".toast-icon");
-  const toastMessage = toast.querySelector(".toast-message");
+  const toastEl = document.getElementById("liveToast");
+  const toast = new bootstrap.Toast(toastEl);
 
-  // Buka sidebar otomatis jika layar lebar
-  if (window.innerWidth > 768) {
-    sidebar.classList.add("active");
-  }
-
-  // Toggle sidebar manual
+  // Toggle sidebar (untuk mobile)
   btnToggle.addEventListener("click", () => {
-    console.log("Tombol hamburger diklik");
-    sidebar.classList.toggle("active");
-    content.classList.toggle("sidebar-open");
-  });
-
-  // Klik di luar sidebar = tutup (untuk mobile)
-  document.addEventListener("click", (event) => {
-    if (
-      window.innerWidth <= 768 &&
-      sidebar.classList.contains("active") &&
-      !sidebar.contains(event.target) &&
-      !btnToggle.contains(event.target)
-    ) {
-      sidebar.classList.remove("active");
-      content.classList.remove("sidebar-open");
-    }
+    sidebar.classList.toggle("show");
   });
 
   // Navigasi menu
   navLinks.forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
+      navLinks.forEach(a => a.classList.remove("active"));
+      link.classList.add("active");
 
       if (link.id === "menu-form") {
         formSection.style.display = "block";
         laporanSection.style.display = "none";
-      } else if (link.id === "menu-laporan") {
+      } else {
         formSection.style.display = "none";
         laporanSection.style.display = "block";
         loadLaporan();
       }
 
-      navLinks.forEach(a => a.classList.remove("active"));
-      link.classList.add("active");
-
       if (window.innerWidth <= 768) {
-        sidebar.classList.remove("active");
-        content.classList.remove("sidebar-open");
+        sidebar.classList.remove("show");
       }
     });
   });
 
-  // Fungsi menampilkan toast
-  window.showToast = function (message, type = "success") {
-    toastMessage.textContent = message;
-    toastIcon.textContent = type === "success" ? "✔️" : "❌";
-    toast.className = "toast show " + type;
-
-    setTimeout(() => {
-      toast.className = "toast " + type;
-    }, 5000);
-  };
-
-  // Submit form
-  form.addEventListener("submit", function (e) {
+  // Form submit
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const formData = new FormData(form);
@@ -84,21 +50,30 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.text())
       .then(result => {
         if (result.toLowerCase().includes("berhasil")) {
-          showToast("Data berhasil disimpan", "success");
+          toastEl.querySelector(".toast-body").textContent = "Data berhasil disimpan";
+          toastEl.classList.remove("text-bg-danger");
+          toastEl.classList.add("text-bg-success");
+          toast.show();
           form.reset();
         } else {
-          showToast("Gagal menyimpan data", "error");
+          toastEl.querySelector(".toast-body").textContent = "Gagal menyimpan data";
+          toastEl.classList.remove("text-bg-success");
+          toastEl.classList.add("text-bg-danger");
+          toast.show();
         }
       })
       .catch(error => {
-        showToast("Terjadi kesalahan: " + error.message, "error");
+        toastEl.querySelector(".toast-body").textContent = "Terjadi kesalahan: " + error.message;
+        toastEl.classList.remove("text-bg-success");
+        toastEl.classList.add("text-bg-danger");
+        toast.show();
       });
   });
 
-  // Fungsi menampilkan laporan
+  // Fungsi load laporan
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
-    container.innerHTML = "<p>Memuat data laporan...</p>";
-    // Tambahkan logika fetch data di sini bila diperlukan
+    container.innerHTML = "<p class='text-muted'>Memuat data laporan...</p>";
+    // Tambahkan fetch jika ingin ambil data dari backend
   }
 });
