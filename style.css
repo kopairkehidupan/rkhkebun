@@ -191,3 +191,11 @@ button:hover {
   }
 }
 
+/* Sembunyikan tombol hamburger di desktop */
+@media screen and (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+
