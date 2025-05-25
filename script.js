@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const btnToggle = document.getElementById("btn-toggle");
   const sidebar = document.querySelector(".sidebar");
-  const content = document.querySelector(".content");
   const formSection = document.getElementById("form-section");
   const laporanSection = document.getElementById("laporan-section");
   const navLinks = document.querySelectorAll(".sidebar nav ul li a");
@@ -10,19 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const toastIcon = toast.querySelector(".toast-icon");
   const toastMessage = toast.querySelector(".toast-message");
 
-  // Buka sidebar otomatis jika layar lebar
-  if (window.innerWidth > 768) {
-    sidebar.classList.add("active");
-  }
-
-  // Toggle sidebar manual
+  // Toggle sidebar
   btnToggle.addEventListener("click", () => {
-    console.log("Tombol hamburger diklik");
     sidebar.classList.toggle("active");
-    content.classList.toggle("sidebar-open");
   });
 
-  // Klik di luar sidebar = tutup (untuk mobile)
+  // Klik di luar sidebar untuk tutup
   document.addEventListener("click", (event) => {
     if (
       window.innerWidth <= 768 &&
@@ -31,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
       !btnToggle.contains(event.target)
     ) {
       sidebar.classList.remove("active");
-      content.classList.remove("sidebar-open");
     }
   });
 
@@ -54,12 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (window.innerWidth <= 768) {
         sidebar.classList.remove("active");
-        content.classList.remove("sidebar-open");
       }
     });
   });
 
-  // Fungsi menampilkan toast
+  // Fungsi Toast
   window.showToast = function (message, type = "success") {
     toastMessage.textContent = message;
     toastIcon.textContent = type === "success" ? "✔️" : "❌";
@@ -70,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   };
 
-  // Submit form
+  // Submit Form
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -95,10 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // Fungsi menampilkan laporan
+  // Dummy fungsi laporan
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p>Memuat data laporan...</p>";
-    // Tambahkan logika fetch data di sini bila diperlukan
+    // Tambahkan fetch ke Google Sheet jika diperlukan
   }
 });
