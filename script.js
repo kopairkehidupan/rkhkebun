@@ -1,12 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const btnToggle = document.getElementById("btn-toggle");
+  const sidebar = document.querySelector(".sidebar");
   const content = document.querySelector(".content");
   const formSection = document.getElementById("form-section");
   const laporanSection = document.getElementById("laporan-section");
-  const navLinks = document.querySelectorAll(".nav-links a");
+  const navLinks = document.querySelectorAll(".sidebar nav ul li a");
   const form = document.getElementById("form-pekerjaan");
   const toast = document.getElementById("toast");
   const toastIcon = toast.querySelector(".toast-icon");
   const toastMessage = toast.querySelector(".toast-message");
+
+  // Buka sidebar otomatis jika layar lebar
+  if (window.innerWidth > 768) {
+    sidebar.classList.add("active");
+  }
+
+  // Toggle sidebar manual
+  btnToggle.addEventListener("click", () => {
+    console.log("Tombol hamburger diklik");
+    sidebar.classList.toggle("active");
+    content.classList.toggle("sidebar-open");
+  });
+
+  // Klik di luar sidebar = tutup (untuk mobile)
+  document.addEventListener("click", (event) => {
+    if (
+      window.innerWidth <= 768 &&
+      sidebar.classList.contains("active") &&
+      !sidebar.contains(event.target) &&
+      !btnToggle.contains(event.target)
+    ) {
+      sidebar.classList.remove("active");
+      content.classList.remove("sidebar-open");
+    }
+  });
 
   // Navigasi menu
   navLinks.forEach(link => {
@@ -24,6 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       navLinks.forEach(a => a.classList.remove("active"));
       link.classList.add("active");
+
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("active");
+        content.classList.remove("sidebar-open");
+      }
     });
   });
 
@@ -63,9 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  // Fungsi menampilkan laporan
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p>Memuat data laporan...</p>";
-    // Tambahkan fetch ke Google Sheets jika perlu
+    // Tambahkan logika fetch data di sini bila diperlukan
   }
 });
