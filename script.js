@@ -1,47 +1,38 @@
 document.getElementById("form-pekerjaan").addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = new URLSearchParams(formData);
-    const statusMessage = document.getElementById("status-message");
+  const form = e.target;
+  const formData = new FormData(form);
+  const data = new URLSearchParams(formData);
 
-    fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", { // Ganti dengan URL Web App kamu
-      method: "POST",
-      body: data,
-    })
+  fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
+    method: "POST",
+    body: data,
+  })
     .then(res => res.text())
     .then(result => {
       if (result.toLowerCase().includes("berhasil")) {
-        showToast("✅ Data berhasil disimpan", "success");
+        showToast("Data berhasil disimpan", "success");
         form.reset();
       } else {
-        showToast("⚠️ Gagal menyimpan data", "error");
+        showToast("Gagal menyimpan data", "error");
       }
     })
     .catch(error => {
-      showToast("❌ Terjadi kesalahan: " + error.message, "error");
+      showToast("Terjadi kesalahan: " + error.message, "error");
     });
-  });
+});
 
 function showToast(message, type = "success") {
   const toast = document.getElementById("toast");
   const icon = toast.querySelector(".toast-icon");
   const msg = toast.querySelector(".toast-message");
 
-  // Atur isi pesan
   msg.textContent = message;
-
-  // Atur icon berdasarkan tipe
   icon.textContent = type === "success" ? "✔️" : "❌";
-
-  // Tambah kelas dan tampilkan
   toast.className = "toast show " + type;
 
-  // Sembunyikan otomatis setelah 3 detik
   setTimeout(() => {
     toast.className = "toast " + type;
-  }, 3000);
+  }, 5000);
 }
-showToast("Data berhasil disimpan", "success");
-showToast("Gagal menyimpan data", "error");
