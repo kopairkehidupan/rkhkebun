@@ -1,4 +1,3 @@
-/* Reset dasar */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,18 +10,28 @@ body {
   color: #2c3e50;
 }
 
-/* Layout utama */
 .wrapper {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
   width: 220px;
   background-color: #34495e;
   color: white;
   padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.active {
+  transform: translateX(0);
 }
 
 .sidebar h2 {
@@ -55,14 +64,12 @@ body {
   background-color: #2c3e50;
 }
 
-/* Konten utama */
 .content {
   flex: 1;
   padding: 30px;
-  background-color: #ecf0f1;
+  margin-top: 60px;
 }
 
-/* Formulir */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -97,17 +104,6 @@ button {
 button:hover {
   background-color: #1e6fa3;
 }
-
-.sidebar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -20px;
-  width: 20px;
-  height: 100%;
-  background-color: #2c3e50;
-}
-
 
 /* Toast */
 .toast {
@@ -154,56 +150,37 @@ button:hover {
   background-color: #e74c3c;
 }
 
-@media screen and (max-width: 768px) {
+/* Mobile behavior */
+.hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: white;
+  background-color: #34495e;
+  padding: 8px 12px;
+  border-radius: 4px;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 769px) {
+  .wrapper {
+    flex-direction: row;
+  }
+
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 220px;
-    background-color: #34495e;
-    padding: 50px 20px 20px 20px; /* ruang untuk tombol */
-    transform: translateX(-200px); /* Sisakan 20px dari 220px total */
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
-
-  .logo {
-      margin: 0 0 20px;
-      font-size: 1.5em;
-      text-align: center;
-    }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-
-  .hamburger {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    font-size: 26px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: block;
-    z-index: 2000; /* lebih tinggi dari sidebar (1000) */
+    position: relative;
+    transform: none;
+    height: auto;
   }
 
   .content {
-    padding: 30px 15px;
-    transition: margin-left 0.3s ease;
-    margin-left: 0;
+    margin-top: 0;
   }
 
-  .content.sidebar-open {
-    margin-left: 220px;
-  }
-}
-
-/* Sembunyikan tombol hamburger di desktop */
-@media screen and (min-width: 769px) {
   .hamburger {
     display: none;
   }
