@@ -1,36 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("form-pekerjaan");
-  const toastEl = document.getElementById("toast");
-  const toastMessage = document.getElementById("toast-message");
-  const toast = new bootstrap.Toast(toastEl);
-
-  const menuForm = document.getElementById("menu-form");
-  const menuLaporan = document.getElementById("menu-laporan");
+  const btnToggle = document.getElementById("btn-toggle");
+  const sidebar = document.querySelector(".sidebar");
+  const content = document.querySelector(".content");
   const formSection = document.getElementById("form-section");
   const laporanSection = document.getElementById("laporan-section");
+  const navLinks = document.querySelectorAll(".sidebar nav ul li a");
+  const form = document.getElementById("form-pekerjaan");
+  const toast = document.getElementById("toast");
+  const toastIcon = toast.querySelector(".toast-icon");
+  const toastMessage = toast.querySelector(".toast-message");
 
-  menuForm.addEventListener("click", (e) => {
-    e.preventDefault();
-    formSection.classList.remove("d-none");
-    laporanSection.classList.add("d-none");
-  });
-
-  menuLaporan.addEventListener("click", (e) => {
-    e.preventDefault();
-    formSection.classList.add("d-none");
-    laporanSection.classList.remove("d-none");
-    loadLaporan();
-  });
-
-  function showToast(message, type = "success") {
-    toastMessage.textContent = message;
-    toastEl.classList.remove("bg-success", "bg-danger");
-    toastEl.classList.add(type === "success" ? "bg-success" : "bg-danger");
-    toast.show();
+  // Buka sidebar otomatis jika layar lebar
+  if (window.innerWidth > 768) {
+    sidebar.classList.add("active");
   }
 
+  // Toggle sidebar manual
+  btnToggle.addEventListener("click", () => {
+    console.log("Tombol hamburger diklik");
+    sidebar.classList.toggle("active");
+    content.classList.toggle("sidebar-open");
+  });
+
+  // Klik di luar sidebar = tutup (untuk mobile)
+  document.addEventListener("click", (event) => {
+    if (
+      window.innerWidth <= 768 &&
+      sidebar.classList.contains("active") &&
+      !sidebar.contains(event.target) &&
+      !btnToggle.contains(event.target)
+    ) {
+      sidebar.classList.remove("active");
+      content.classList.remove("sidebar-open");
+    }
+  });
+
+  // Navigasi menu
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      if (link.id === "menu-form") {
+        formSection.style.display = "block";
+        laporanSection.style.display = "none";
+      } else if (link.id === "menu-laporan") {
+        formSection.style.display = "none";
+        laporanSection.style.display = "block";
+        loadLaporan();
+      }
+
+      navLinks.forEach(a => a.classList.remove("active"));
+      link.classList.add("active");
+
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("active");
+        content.classList.remove("sidebar-open");
+      }
+    });
+  });
+
+  // Fungsi menampilkan toast
+  window.showToast = function (message, type = "success") {
+    toastMessage.textContent = message;
+    toastIcon.textContent = type === "success" ? "✔️" : "❌";
+    toast.className = "toast show " + type;
+
+    setTimeout(() => {
+      toast.className = "toast " + type;
+    }, 5000);
+  };
+
+  // Submit form
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
     const formData = new FormData(form);
     const data = new URLSearchParams(formData);
 
@@ -52,9 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  // Fungsi menampilkan laporan
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p>Memuat data laporan...</p>";
-    // Fetch logic dapat ditambahkan di sini
+    // Tambahkan logika fetch data di sini bila diperlukan
   }
 });
