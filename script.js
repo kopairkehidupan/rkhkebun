@@ -6,10 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const laporanSection = document.getElementById("laporan-section");
   const navLinks = document.querySelectorAll(".nav-link");
   const form = document.getElementById("form-pekerjaan");
+
+  // Bootstrap toast setup
   const toastEl = document.getElementById("liveToast");
+  const toastBody = toastEl.querySelector(".toast-body");
   const toast = new bootstrap.Toast(toastEl);
 
-  // Toggle sidebar (untuk mobile)
+  // Toggle sidebar (mobile)
   btnToggle.addEventListener("click", () => {
     sidebar.classList.toggle("show");
   });
@@ -36,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Form submit
+  // Submit form
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -50,20 +53,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.text())
       .then(result => {
         if (result.toLowerCase().includes("berhasil")) {
-          toastEl.querySelector(".toast-body").textContent = "Data berhasil disimpan";
+          toastBody.textContent = "Data berhasil disimpan";
           toastEl.classList.remove("text-bg-danger");
           toastEl.classList.add("text-bg-success");
           toast.show();
           form.reset();
         } else {
-          toastEl.querySelector(".toast-body").textContent = "Gagal menyimpan data";
+          toastBody.textContent = "Gagal menyimpan data";
           toastEl.classList.remove("text-bg-success");
           toastEl.classList.add("text-bg-danger");
           toast.show();
         }
       })
       .catch(error => {
-        toastEl.querySelector(".toast-body").textContent = "Terjadi kesalahan: " + error.message;
+        toastBody.textContent = "Terjadi kesalahan: " + error.message;
         toastEl.classList.remove("text-bg-success");
         toastEl.classList.add("text-bg-danger");
         toast.show();
@@ -74,6 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p class='text-muted'>Memuat data laporan...</p>";
-    // Tambahkan fetch jika ingin ambil data dari backend
+    // Tambahkan fetch() jika ingin ambil data Google Sheets
   }
 });
