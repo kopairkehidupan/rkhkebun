@@ -16,76 +16,71 @@
   </style>
 </head>
 <body class="bg-light">
-  <div class="d-flex min-vh-100">
-    <!-- Sidebar -->
-    <aside class="bg-dark text-white p-3" style="width: 220px;">
-      <h2 class="mb-3">🌿 RKH Kebun</h2>
-      <nav class="nav flex-column">
-        <a class="nav-link text-white active" href="#" id="menu-form">Form RKH</a>
-        <a class="nav-link text-white" href="#" id="menu-laporan">Tampilkan Laporan</a>
-      </nav>
-    </aside>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">🌿 Rencana Kerja Harian (RKH)</h1>
 
-    <!-- Main Content -->
-    <main class="flex-fill p-4">
-      <!-- Form RKH -->
-      <section id="form-section">
-        <h1 class="mb-4">Form Rencana Kerja Harian (RKH)</h1>
-        <form id="form-pekerjaan" class="row g-3">
-          <div class="col-md-6">
-            <label for="kebun" class="form-label">Kebun</label>
-            <input type="text" class="form-control" id="kebun" name="kebun" required />
-          </div>
-          <div class="col-md-6">
-            <label for="divisi" class="form-label">Divisi</label>
-            <input type="text" class="form-control" id="divisi" name="divisi" required />
-          </div>
-          <div class="col-md-6">
-            <label for="tanggal" class="form-label">Tanggal</label>
-            <input type="date" class="form-control" id="tanggal" name="tanggal" required />
-          </div>
-          <div class="col-md-6">
-            <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan</label>
-            <input type="text" class="form-control" id="jenis_pekerjaan" name="jenis_pekerjaan" required />
-          </div>
-          <div class="col-md-4">
-            <label for="blok" class="form-label">Blok</label>
-            <input type="text" class="form-control" id="blok" name="blok" required />
-          </div>
-          <div class="col-md-4">
-            <label for="luas" class="form-label">Luas (Ha)</label>
-            <input type="number" class="form-control" step="0.01" id="luas" name="luas" required />
-          </div>
-          <div class="col-md-4">
-            <label for="volume" class="form-label">Volume Pekerjaan</label>
-            <input type="text" class="form-control" id="volume" name="volume" required />
-          </div>
-          <div class="col-md-4">
-            <label for="hk" class="form-label">HK</label>
-            <input type="number" class="form-control" id="hk" name="hk" required />
-          </div>
-          <div class="col-md-4">
-            <label for="bahan" class="form-label">Bahan</label>
-            <input type="text" class="form-control" id="bahan" name="bahan" />
-          </div>
-          <div class="col-md-4">
-            <label for="pengawasan" class="form-label">Pengawasan</label>
-            <input type="text" class="form-control" id="pengawasan" name="pengawasan" />
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Buat</button>
-          </div>
-        </form>
-      </section>
+    <!-- Menu Navigasi -->
+    <nav class="nav justify-content-center mb-4">
+      <a class="nav-link active" href="#" id="menu-form">Form RKH</a>
+      <a class="nav-link" href="#" id="menu-laporan">Tampilkan Laporan</a>
+    </nav>
 
-      <!-- Laporan -->
-      <section id="laporan-section" class="d-none">
-        <h1 class="mt-5">Laporan RKH</h1>
-        <div id="laporan-container" class="mt-3">
-          <!-- Data laporan akan muncul di sini -->
+    <!-- Form Section -->
+    <section id="form-section">
+      <form id="form-pekerjaan" class="row g-3">
+        <div class="col-md-6">
+          <label for="kebun" class="form-label">Kebun</label>
+          <input type="text" class="form-control" id="kebun" name="kebun" required />
         </div>
-      </section>
-    </main>
+        <div class="col-md-6">
+          <label for="divisi" class="form-label">Divisi</label>
+          <input type="text" class="form-control" id="divisi" name="divisi" required />
+        </div>
+        <div class="col-md-6">
+          <label for="tanggal" class="form-label">Tanggal</label>
+          <input type="date" class="form-control" id="tanggal" name="tanggal" required />
+        </div>
+        <div class="col-md-6">
+          <label for="jenis_pekerjaan" class="form-label">Jenis Pekerjaan</label>
+          <input type="text" class="form-control" id="jenis_pekerjaan" name="jenis_pekerjaan" required />
+        </div>
+        <div class="col-md-4">
+          <label for="blok" class="form-label">Blok</label>
+          <input type="text" class="form-control" id="blok" name="blok" required />
+        </div>
+        <div class="col-md-4">
+          <label for="luas" class="form-label">Luas (Ha)</label>
+          <input type="number" class="form-control" step="0.01" id="luas" name="luas" required />
+        </div>
+        <div class="col-md-4">
+          <label for="volume" class="form-label">Volume Pekerjaan</label>
+          <input type="text" class="form-control" id="volume" name="volume" required />
+        </div>
+        <div class="col-md-4">
+          <label for="hk" class="form-label">HK</label>
+          <input type="number" class="form-control" id="hk" name="hk" required />
+        </div>
+        <div class="col-md-4">
+          <label for="bahan" class="form-label">Bahan</label>
+          <input type="text" class="form-control" id="bahan" name="bahan" />
+        </div>
+        <div class="col-md-4">
+          <label for="pengawasan" class="form-label">Pengawasan</label>
+          <input type="text" class="form-control" id="pengawasan" name="pengawasan" />
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Buat</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Laporan Section -->
+    <section id="laporan-section" class="d-none mt-5">
+      <h2>Laporan RKH</h2>
+      <div id="laporan-container" class="mt-3">
+        <p>Memuat data laporan...</p>
+      </div>
+    </section>
   </div>
 
   <!-- Toast -->
@@ -93,7 +88,7 @@
     <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert">
       <div class="d-flex">
         <div class="toast-body" id="toast-message">Data berhasil disimpan</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
       </div>
     </div>
   </div>
