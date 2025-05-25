@@ -26,10 +26,20 @@ document.getElementById("form-pekerjaan").addEventListener("submit", function (e
 
 function showToast(message, type = "success") {
   const toast = document.getElementById("toast");
-  toast.textContent = message;
+  const icon = toast.querySelector(".toast-icon");
+  const msg = toast.querySelector(".toast-message");
+
+  // Atur isi pesan
+  msg.textContent = message;
+
+  // Atur icon berdasarkan tipe
+  icon.textContent = type === "success" ? "✔️" : "❌";
+
+  // Tambah kelas dan tampilkan
   toast.className = "toast show " + type;
 
+  // Sembunyikan otomatis setelah 3 detik
   setTimeout(() => {
-    toast.className = "toast " + type; // reset visibility
-  }, 5000); // 5 detik
+    toast.className = "toast " + type;
+  }, 3000);
 }
