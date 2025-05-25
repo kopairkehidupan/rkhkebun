@@ -3,13 +3,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const content = document.querySelector(".content");
 
-  // Toggle sidebar ketika tombol diklik
+  // Buka sidebar otomatis jika layar lebar
+  if (window.innerWidth > 768) {
+    sidebar.classList.add("active");
+  }
+
+  // Toggle sidebar manual
   btnToggle.addEventListener("click", () => {
     sidebar.classList.toggle("active");
     content.classList.toggle("sidebar-open");
   });
 
-  // Navigasi antar menu
+  // Klik di luar sidebar = tutup (untuk mobile)
+  document.addEventListener("click", (event) => {
+    if (
+      window.innerWidth <= 768 &&
+      sidebar.classList.contains("active") &&
+      !sidebar.contains(event.target) &&
+      !btnToggle.contains(event.target)
+    ) {
+      sidebar.classList.remove("active");
+      content.classList.remove("sidebar-open");
+    }
+  });
+
+  // Navigasi menu
   document.querySelectorAll(".sidebar nav ul li a").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -36,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Fungsi untuk menampilkan toast
+  // Toast function
   window.showToast = function (message, type = "success") {
     const toast = document.getElementById("toast");
     const icon = toast.querySelector(".toast-icon");
@@ -51,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   };
 
-  // Form submission
+  // Form submit
   document.getElementById("form-pekerjaan").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -77,10 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  // Fungsi loadLaporan sebagai placeholder
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p>Memuat data laporan...</p>";
+    // Anda bisa menambahkan fetch dari Google Sheets jika diperlukan.
   }
 });
-
