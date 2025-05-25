@@ -72,3 +72,30 @@ btnToggle.addEventListener("click", () => {
   sidebar.classList.toggle("active");
   content.classList.toggle("sidebar-open");
 });
+
+document.querySelectorAll(".sidebar nav ul li a").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // Navigasi antar section seperti yang sudah ada
+    if (link.id === "menu-form") {
+      document.getElementById("form-section").style.display = "block";
+      document.getElementById("laporan-section").style.display = "none";
+    } else if (link.id === "menu-laporan") {
+      document.getElementById("form-section").style.display = "none";
+      document.getElementById("laporan-section").style.display = "block";
+      loadLaporan();
+    }
+
+    // Atur kelas active di menu
+    document.querySelectorAll(".sidebar nav ul li a").forEach(a => a.classList.remove("active"));
+    link.classList.add("active");
+
+    // Jika di layar kecil, sembunyikan sidebar setelah klik menu
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove("active");
+      content.classList.remove("sidebar-open");
+    }
+  });
+});
+
