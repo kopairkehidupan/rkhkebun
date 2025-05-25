@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnToggle = document.getElementById("btn-toggle");
   const sidebar = document.querySelector(".sidebar");
   const content = document.querySelector(".content");
+  const formSection = document.getElementById("form-section");
+  const laporanSection = document.getElementById("laporan-section");
+  const navLinks = document.querySelectorAll(".sidebar nav ul li a");
+  const form = document.getElementById("form-pekerjaan");
+  const toast = document.getElementById("toast");
+  const toastIcon = toast.querySelector(".toast-icon");
+  const toastMessage = toast.querySelector(".toast-message");
 
   // Buka sidebar otomatis jika layar lebar
   if (window.innerWidth > 768) {
@@ -10,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Toggle sidebar manual
   btnToggle.addEventListener("click", () => {
+    console.log("Hamburger diklik");
     sidebar.classList.toggle("active");
     content.classList.toggle("sidebar-open");
   });
@@ -28,12 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Navigasi menu
-  document.querySelectorAll(".sidebar nav ul li a").forEach(link => {
+  navLinks.forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-
-      const formSection = document.getElementById("form-section");
-      const laporanSection = document.getElementById("laporan-section");
 
       if (link.id === "menu-form") {
         formSection.style.display = "block";
@@ -44,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadLaporan();
       }
 
-      document.querySelectorAll(".sidebar nav ul li a").forEach(a => a.classList.remove("active"));
+      navLinks.forEach(a => a.classList.remove("active"));
       link.classList.add("active");
 
       if (window.innerWidth <= 768) {
@@ -54,14 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Toast function
+  // Fungsi menampilkan toast
   window.showToast = function (message, type = "success") {
-    const toast = document.getElementById("toast");
-    const icon = toast.querySelector(".toast-icon");
-    const msg = toast.querySelector(".toast-message");
-
-    msg.textContent = message;
-    icon.textContent = type === "success" ? "✔️" : "❌";
+    toastMessage.textContent = message;
+    toastIcon.textContent = type === "success" ? "✔️" : "❌";
     toast.className = "toast show " + type;
 
     setTimeout(() => {
@@ -69,11 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 5000);
   };
 
-  // Form submit
-  document.getElementById("form-pekerjaan").addEventListener("submit", function (e) {
+  // Submit form
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const form = e.target;
     const formData = new FormData(form);
     const data = new URLSearchParams(formData);
 
@@ -95,9 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  // Fungsi menampilkan laporan
   function loadLaporan() {
     const container = document.getElementById("laporan-container");
     container.innerHTML = "<p>Memuat data laporan...</p>";
-    // Anda bisa menambahkan fetch dari Google Sheets jika diperlukan.
+    // Tambahkan logika fetch data di sini bila diperlukan
   }
 });
