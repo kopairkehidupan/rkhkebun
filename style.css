@@ -143,50 +143,6 @@ button:hover {
   background-color: #e74c3c;
 }
 
-/* Responsif */
-@media screen and (max-width: 768px) {
-  .wrapper {
-    flex-direction: column;
-  }
-
-  .sidebar {
-  border: 3px solid red !important;
-  background-color: #34495e !important;
-  color: white !important;
-  width: 220px !important;
-  height: 100vh !important;
-}
-
-  .sidebar nav ul {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .sidebar nav ul li {
-    margin: 0 10px;
-  }
-
-  .content {
-    padding: 20px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Hamburger button */
-.hamburger {
-  font-size: 26px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: none; /* default disembunyikan */
-  margin-bottom: 15px;
-}
-
-/* Sidebar toggle di mobile */
 @media screen and (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -195,7 +151,7 @@ button:hover {
     height: 100vh;
     width: 220px;
     background-color: #34495e;
-    padding: 20px;
+    padding: 50px 20px 20px 20px; /* ruang untuk tombol */
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 1000;
@@ -205,20 +161,27 @@ button:hover {
     transform: translateX(0);
   }
 
-  /* Tampilkan tombol hamburger */
   .hamburger {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
     display: block;
+    z-index: 1100;
   }
 
-  /* Konten utama full width saat sidebar disembunyikan */
   .content {
     padding: 30px 15px;
     transition: margin-left 0.3s ease;
     margin-left: 0;
   }
 
-  /* Konten utama bergeser saat sidebar muncul */
   .content.sidebar-open {
     margin-left: 220px;
   }
 }
+
