@@ -34,18 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const clone = lastGroup.cloneNode(true);
   
     clone.querySelectorAll("input").forEach(input => input.value = "");
-    const hapusBtn = clone.querySelector(".btn-hapus-input");
-      if (hapusBtn) {
-        hapusBtn.addEventListener("click", () => {
-          const group = hapusBtn.closest(".pekerjaan-group");
-          if (document.querySelectorAll(".pekerjaan-group").length > 1) {
-            group.remove();
-          } else {
-            showToast("Minimal 1 pekerjaan harus ada", "error");
-          }
-        });
-      }
+    clone.querySelector(".btn-hapus").addEventListener("click", () => clone.remove());
+  
     wrapper.appendChild(clone);
+  });
+  
+  document.querySelectorAll(".btn-hapus-input").forEach(btn => {
+    btn.addEventListener("click", () => btn.closest(".pekerjaan-group").remove());
   });
 
   // ==== FORM RKH ====
