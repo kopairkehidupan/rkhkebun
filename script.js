@@ -41,12 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
     // Hapus class warna lama
-      clone.classList.remove("bg-success", "bg-primary");
+      clone.classList.remove("alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
     
       // Tambahkan warna berbeda berdasarkan urutan
       const groupCount = wrapper.querySelectorAll(".pekerjaan-group").length;
       const isGenap = groupCount % 2 === 0;
-      clone.classList.add(isGenap ? "bg-success" : "bg-primary");
+      clone.classList.add(isGenap ? "alert-primary" : "alert-success" : "alert-info" : "alert-danger" : "alert-warning");
     
     wrapper.appendChild(clone);
   });
