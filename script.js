@@ -29,34 +29,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("btn-tambah")?.addEventListener("click", () => {
-  const wrapper = document.getElementById("pekerjaan-wrapper");
-  const lastGroup = wrapper?.querySelector(".pekerjaan-group:last-child");
-
-  if (!lastGroup) {
-    showToast("Tidak ada entri yang bisa digandakan!", "error");
-    return;
-  }
-
-  const clone = lastGroup.cloneNode(true);
-  clone.querySelectorAll("input").forEach(input => input.value = "");
-
-  wrapper.appendChild(clone); // ← Tambahkan dulu ke DOM
-
-  // Setelah DOM update, baru cari tombol hapus di dalam clone
-  const hapusBtn = clone.querySelector(".btn-hapus-input");
-  if (hapusBtn) {
-    hapusBtn.addEventListener("click", () => {
-      const group = hapusBtn.closest(".pekerjaan-group");
-      if (document.querySelectorAll(".pekerjaan-group").length > 1) {
-        group.remove();
-      } else {
-        showToast("Minimal 1 pekerjaan harus ada", "error");
-      }
-    });
-  }
+    const wrapper = document.getElementById("pekerjaan-wrapper");
+    const lastGroup = wrapper?.querySelector(".pekerjaan-group:last-child");
+  
+    if (!lastGroup) {
+      showToast("Tidak ada entri yang bisa digandakan!", "error");
+      return;
+    }
+  
+    const clone = lastGroup.cloneNode(true);
+    clone.querySelectorAll("input").forEach(input => input.value = "");
+  
+    wrapper.appendChild(clone); // ← Tambahkan dulu ke DOM
+  
+    // Setelah DOM update, baru cari tombol hapus di dalam clone
+    const hapusBtn = clone.querySelector(".btn-hapus-input");
+    if (hapusBtn) {
+      hapusBtn.addEventListener("click", () => {
+        const group = hapusBtn.closest(".pekerjaan-group");
+        if (document.querySelectorAll(".pekerjaan-group").length > 1) {
+          group.remove();
+        } else {
+          showToast("Minimal 1 pekerjaan harus ada", "error");
+        }
+      });
+    }
 });
-
-
 
   // ==== FORM RKH ====
   if (form && toast) {
