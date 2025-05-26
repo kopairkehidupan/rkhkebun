@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const clone = lastGroup.cloneNode(true);
   clone.querySelectorAll("input").forEach(input => input.value = "");
 
+  wrapper.appendChild(clone); // ← Tambahkan dulu ke DOM
+
+  // Setelah DOM update, baru cari tombol hapus di dalam clone
   const hapusBtn = clone.querySelector(".btn-hapus-input");
   if (hapusBtn) {
     hapusBtn.addEventListener("click", () => {
@@ -51,9 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  wrapper.appendChild(clone);
 });
+
 
 
   // ==== FORM RKH ====
