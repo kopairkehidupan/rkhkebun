@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     clone.querySelectorAll("input").forEach(input => input.value = "");
   
     // Warna rotasi
-    const alertClasses = ["alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning"];
+    const alertClasses = ["alert alert-primary", "alert alert-success", "alert alert-info", "alert alert-danger", "alert alert-warning"];
     const allGroups = wrapper.querySelectorAll(".pekerjaan-group");
   
     // Hapus warna lama
