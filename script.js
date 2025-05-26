@@ -44,20 +44,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-  // Fitur Laporan RKH
-  const btnCari = document.getElementById("btn-cari");
-  const bulanInput = document.getElementById("bulan");
-  const tbody = document.querySelector("#tabel-laporan tbody");
+// Fitur Laporan RKH
+const btnCari = document.getElementById("btn-cari");
+const bulanInput = document.getElementById("bulan");
+const tbody = document.querySelector("#tabel-laporan tbody");
 
-  if (btnCari && bulanInput && tbody) {
-    btnCari.addEventListener("click", () => {
-      const bulan = bulanInput.value;
-      if (!bulan) {
-        alert("Silakan pilih bulan terlebih dahulu");
-        return;
-      }
+if (btnCari && bulanInput && tbody) {
+  btnCari.addEventListener("click", () => {
+    const bulan = bulanInput.value;
+    if (!bulan) {
+      alert("Silakan pilih bulan terlebih dahulu");
+      return;
+    }
 
-      fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
+    fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
         .then(res => res.json())
         .then(data => {
           tbody.innerHTML = "";
@@ -86,5 +86,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   }
+
+document.querySelectorAll(".btn-hapus").forEach(button => {
+  button.addEventListener("click", () => {
+    const konfirmasi = confirm("Yakin ingin menghapus data ini?");
+    if (!konfirmasi) return;
+
+    const index = button.getAttribute("data-index");
+    fetch(`https://script.google.com/macros/s/YOUR_DEPLOYED_ID/exec?hapus=${bulan}&index=${index}`, {
+      method: "GET",
+    })
+    .then(res => res.text())
+    .then(msg => {
+      alert(msg);
+      btnCari.click(); // Refresh data setelah hapus
+    })
+    .catch(err => {
+      console.error("Gagal menghapus data:", err);
+      alert("Terjadi kesalahan saat menghapus.");
+    });
+  });
+});
+
 
 
