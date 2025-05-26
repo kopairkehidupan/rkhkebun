@@ -28,30 +28,73 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  document.getElementById("btn-tambah").addEventListener("click", () => {
+    const tbody = document.querySelector("#tabel-pekerjaan tbody");
+    const row = tbody.querySelector("tr").cloneNode(true);
+    row.querySelectorAll("input").forEach(input => input.value = "");
+    row.querySelector(".btn-hapus").addEventListener("click", () => row.remove());
+    tbody.appendChild(row);
+  });
+
+  document.querySelectorAll(".btn-hapus").forEach(button => {
+    button.addEventListener("click", () => {
+      button.closest("tr").remove();
+    });
+  });
+
   // ==== FORM RKH ====
   if (form && toast) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+    
       const formData = new FormData(form);
-      const data = new URLSearchParams(formData);
-
-      fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
-        method: "POST",
-        body: data,
-      })
-        .then(res => res.text())
-        .then(result => {
-          if (result.toLowerCase().includes("berhasil")) {
-            showToast("Data disimpan", "success");
-            form.reset();
-          } else {
-            showToast("Gagal menyimpan data", "error");
-          }
+    
+      const kebun = formData.get("kebun");
+      const divisi = formData.get("divisi");
+      const tanggal = formData.get("tanggal");
+    
+      const jenis = formData.getAll("jenis[]");
+      const blok = formData.getAll("blok[]");
+      const luas = formData.getAll("luas[]");
+      const volume = formData.getAll("volume[]");
+      const hk = formData.getAll("hk[]");
+      const bahan = formData.getAll("bahan[]");
+      const pengawas = formData.getAll("penanggung_jawab[]");
+    
+      let promises = [];
+    
+      for (let i = 0; i < jenis.length; i++) {
+        const data = new URLSearchParams({
+          kebun,
+          divisi,
+          tanggal,
+          jenis: jenis[i],
+          blok: blok[i],
+          luas: luas[i],
+          volume: volume[i],
+          hk: hk[i],
+          bahan: bahan[i],
+          penanggung_jawab: pengawas[i],
+        });
+    
+        promises.push(
+          fetch("https://script.google.com/macros/s/.../exec", {
+            method: "POST",
+            body: data,
+          }).then(res => res.text())
+        );
+      }
+    
+      Promise.all(promises)
+        .then(() => {
+          showToast("Semua data berhasil disimpan", "success");
+          form.reset();
         })
-        .catch(error => {
-          showToast("Terjadi kesalahan: " + error.message, "error");
+        .catch(err => {
+          showToast("Gagal menyimpan: " + err.message, "error");
         });
     });
+
   }
 
   // ==== LAPORAN RKH ====
