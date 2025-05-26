@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +9,13 @@
 </head>
 <body>
 
-  <div class="container py-4">
+  <div class="container py-4 position-relative">
+    <!-- Tombol kembali -->
+    <a href="index.html" class="btn btn-outline-secondary position-absolute top-0 start-0 mt-3 ms-3">
+      ← Kembali
+    </a>
+
+    <!-- Judul -->
     <h2 class="mb-4 text-center">Form Rencana Kerja Harian</h2>
     
     <form id="form-pekerjaan">
@@ -66,6 +72,8 @@
       <button type="submit" class="btn btn-success w-100">Buat</button>
     </form>
   </div>
+
+  <!-- Toast sukses -->
   <div id="toast" class="toast">
     <div class="toast-icon">✔️</div>
     <div class="toast-message">Data berhasil disimpan</div>
