@@ -11,7 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     toast.className = "toast show " + type;
 
     setTimeout(() => {
-      toast.className = "toast " + type;
+      toast.classList.add("hide");
+      setTimeout(() => {
+        toast.className = "toast " + type; // reset class agar bisa digunakan ulang
+      }, 400); // tunggu hingga animasi selesai
     }, 5000);
   }
 
