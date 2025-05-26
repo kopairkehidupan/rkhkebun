@@ -82,26 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Pasang listener ke tombol hapus
             document.querySelectorAll(".btn-hapus").forEach(button => {
-              button.addEventListener("click", () => {
-                const konfirmasi = confirm("Yakin ingin menghapus data ini?");
-                if (!konfirmasi) return;
-
-                const index = button.getAttribute("data-index");
-
-                fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
-                  method: "GET",
+            button.addEventListener("click", () => {
+              const konfirmasi = confirm("Yakin ingin menghapus data ini?");
+              if (!konfirmasi) return;
+          
+              const index = button.getAttribute("data-index");
+              const bulan = document.getElementById("bulan").value;
+          
+              fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
+                method: "GET",
+              })
+                .then(res => res.text())
+                .then(msg => {
+                  alert(msg);
+                  btnCari.click(); // Refresh data setelah hapus
                 })
-                  .then(res => res.text())
-                  .then(msg => {
-                    alert(msg);
-                    btnCari.click(); // Refresh data setelah hapus
-                  })
-                  .catch(err => {
-                    console.error("Gagal menghapus data:", err);
-                    alert("Terjadi kesalahan saat menghapus.");
-                  });
-              });
+                .catch(err => {
+                  console.error("Gagal menghapus data:", err);
+                  alert("Terjadi kesalahan saat menghapus.");
+                });
             });
+          });
           }
         })
         .catch(err => {
