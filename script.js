@@ -29,18 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("btn-tambah").addEventListener("click", () => {
-    const tbody = document.querySelector("#tabel-pekerjaan tbody");
-    const row = tbody.querySelector("tr").cloneNode(true);
-    row.querySelectorAll("input").forEach(input => input.value = "");
-    row.querySelector(".btn-hapus").addEventListener("click", () => row.remove());
-    tbody.appendChild(row);
+    const wrapper = document.getElementById("pekerjaan-wrapper");
+    const lastGroup = wrapper.querySelector(".pekerjaan-group:last-child");
+    const clone = lastGroup.cloneNode(true);
+  
+    clone.querySelectorAll("input").forEach(input => input.value = "");
+    clone.querySelector(".btn-hapus").addEventListener("click", () => clone.remove());
+  
+    wrapper.appendChild(clone);
+  });
+  
+  document.querySelectorAll(".btn-hapus").forEach(btn => {
+    btn.addEventListener("click", () => btn.closest(".pekerjaan-group").remove());
   });
 
-  document.querySelectorAll(".btn-hapus").forEach(button => {
-    button.addEventListener("click", () => {
-      button.closest("tr").remove();
-    });
-  });
 
   // ==== FORM RKH ====
   if (form && toast) {
