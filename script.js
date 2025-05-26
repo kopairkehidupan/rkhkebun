@@ -32,22 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-tambah")?.addEventListener("click", () => {
     const wrapper = document.getElementById("pekerjaan-wrapper");
     const lastGroup = wrapper?.querySelector(".pekerjaan-group:last-child");
-
+  
     if (!lastGroup) {
       showToast("Tidak ada entri yang bisa digandakan!", "error");
       return;
     }
-
+  
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
-    // Hapus class warna lama
-      clone.classList.remove("alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
-    
-      // Tambahkan warna berbeda berdasarkan urutan
-      const groupCount = wrapper.querySelectorAll(".pekerjaan-group").length;
-      const isGenap = groupCount % 2 === 0;
-      clone.classList.add(isGenap ? "alert-primary" : "alert-success" : "alert-info" : "alert-danger" : "alert-warning");
-    
+  
+    // Warna rotasi
+    const alertClasses = ["alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning"];
+    const allGroups = wrapper.querySelectorAll(".pekerjaan-group");
+  
+    // Hapus warna lama
+    alertClasses.forEach(w => clone.classList.remove(w));
+  
+    // Hitung indeks warna berdasarkan jumlah grup
+    const colorIndex = allGroups.length % alertClasses.length;
+    clone.classList.add(alertClasses[colorIndex]);
+  
     wrapper.appendChild(clone);
   });
 
