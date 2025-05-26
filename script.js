@@ -1,68 +1,69 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ==== FORM RKH ====
   const form = document.getElementById("form-pekerjaan");
   const toast = document.getElementById("toast");
-  const toastIcon = toast.querySelector(".toast-icon");
-  const toastMessage = toast.querySelector(".toast-message");
 
-  // Fungsi Toast
-  function showToast(message, type = "success") {
-    toastMessage.textContent = message;
-    toastIcon.textContent = type === "success" ? "✔️" : "❌";
-    toast.className = "toast show " + type;
+  if (form && toast) {
+    const toastIcon = toast.querySelector(".toast-icon");
+    const toastMessage = toast.querySelector(".toast-message");
 
-    setTimeout(() => {
-      toast.classList.add("hide");
+    function showToast(message, type = "success") {
+      toastMessage.textContent = message;
+      toastIcon.textContent = type === "success" ? "✔️" : "❌";
+      toast.className = "toast show " + type;
+
       setTimeout(() => {
-        toast.className = "toast " + type; // reset class agar bisa digunakan ulang
-      }, 400); // tunggu hingga animasi selesai
-    }, 5000);
-  }
-
-  // Submit Form ke Google Sheet
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = new URLSearchParams(formData);
-
-    fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
-      method: "POST",
-      body: data,
-    })
-      .then(res => res.text())
-      .then(result => {
-        if (result.toLowerCase().includes("berhasil")) {
-          showToast("Data disimpan", "success");
-          form.reset();
-        } else {
-          showToast("Gagal menyimpan data", "error");
-        }
-      })
-      .catch(error => {
-        showToast("Terjadi kesalahan: " + error.message, "error");
-      });
-  });
-});
-
-// Fitur Laporan RKH
-const btnCari = document.getElementById("btn-cari");
-const bulanInput = document.getElementById("bulan");
-const tbody = document.querySelector("#tabel-laporan tbody");
-
-if (btnCari && bulanInput && tbody) {
-  btnCari.addEventListener("click", () => {
-    const bulan = bulanInput.value;
-    if (!bulan) {
-      alert("Silakan pilih bulan terlebih dahulu");
-      return;
+        toast.classList.add("hide");
+        setTimeout(() => {
+          toast.className = "toast " + type;
+        }, 400);
+      }, 5000);
     }
 
-    fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = new URLSearchParams(formData);
+
+      fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
+        method: "POST",
+        body: data,
+      })
+        .then(res => res.text())
+        .then(result => {
+          if (result.toLowerCase().includes("berhasil")) {
+            showToast("Data disimpan", "success");
+            form.reset();
+          } else {
+            showToast("Gagal menyimpan data", "error");
+          }
+        })
+        .catch(error => {
+          showToast("Terjadi kesalahan: " + error.message, "error");
+        });
+    });
+  }
+
+  // ==== LAPORAN RKH ====
+  const btnCari = document.getElementById("btn-cari");
+  const bulanInput = document.getElementById("bulan");
+  const tbody = document.querySelector("#tabel-laporan tbody");
+
+  if (btnCari && bulanInput && tbody) {
+    btnCari.addEventListener("click", () => {
+      const bulan = bulanInput.value;
+      if (!bulan) {
+        alert("Silakan pilih bulan terlebih dahulu");
+        return;
+      }
+
+      fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
         .then(res => res.json())
         .then(data => {
           tbody.innerHTML = "";
+
           if (data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data untuk bulan ini</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center">Tidak ada data untuk bulan ini</td></tr>`;
           } else {
             data.forEach((item, index) => {
               tbody.innerHTML += `
@@ -78,6 +79,29 @@ if (btnCari && bulanInput && tbody) {
                   <td><button class="btn btn-sm btn-danger btn-hapus" data-index="${index}">Hapus</button></td>
                 </tr>`;
             });
+
+            // Pasang listener ke tombol hapus
+            document.querySelectorAll(".btn-hapus").forEach(button => {
+              button.addEventListener("click", () => {
+                const konfirmasi = confirm("Yakin ingin menghapus data ini?");
+                if (!konfirmasi) return;
+
+                const index = button.getAttribute("data-index");
+
+                fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
+                  method: "GET",
+                })
+                  .then(res => res.text())
+                  .then(msg => {
+                    alert(msg);
+                    btnCari.click(); // Refresh data setelah hapus
+                  })
+                  .catch(err => {
+                    console.error("Gagal menghapus data:", err);
+                    alert("Terjadi kesalahan saat menghapus.");
+                  });
+              });
+            });
           }
         })
         .catch(err => {
@@ -86,30 +110,4 @@ if (btnCari && bulanInput && tbody) {
         });
     });
   }
-
-document.querySelectorAll(".btn-hapus").forEach(button => {
-  button.addEventListener("click", () => {
-    const konfirmasi = confirm("Yakin ingin menghapus data ini?");
-    if (!konfirmasi) return;
-
-    const index = button.getAttribute("data-index");
-    const bulan = bulanInput.value;
-
-    fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
-      method: "GET",
-    })
-      .then(res => res.text())
-      .then(msg => {
-        alert(msg);
-        btnCari.click(); // Refresh data setelah hapus
-      })
-      .catch(err => {
-        console.error("Gagal menghapus data:", err);
-        alert("Terjadi kesalahan saat menghapus.");
-      });
-  });
 });
-
-
-
-
