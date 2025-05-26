@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.text())
       .then(result => {
         if (result.toLowerCase().includes("berhasil")) {
-          showToast("Data berhasil disimpan", "success");
+          showToast("Data disimpan", "success");
           form.reset();
         } else {
           showToast("Gagal menyimpan data", "error");
