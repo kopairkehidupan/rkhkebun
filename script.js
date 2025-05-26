@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td>${item.volume}</td>
                   <td>${item.hk}</td>
                   <td>${item.pengawas}</td>
+                  <td><button class="btn btn-sm btn-danger btn-hapus" data-index="${index}">Hapus</button></td>
                 </tr>`;
             });
           }
