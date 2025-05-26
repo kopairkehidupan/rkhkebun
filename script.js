@@ -93,7 +93,7 @@ document.querySelectorAll(".btn-hapus").forEach(button => {
     if (!konfirmasi) return;
 
     const index = button.getAttribute("data-index");
-    fetch(`https://script.google.com/macros/s/YOUR_DEPLOYED_ID/exec?hapus=${bulan}&index=${index}`, {
+    fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
       method: "GET",
     })
     .then(res => res.text())
