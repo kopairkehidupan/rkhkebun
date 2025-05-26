@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     
         promises.push(
-          fetch("https://script.google.com/macros/s/.../exec", {
+          fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
             method: "POST",
             body: data,
           }).then(res => res.text())
