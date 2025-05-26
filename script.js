@@ -156,8 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td>${item.divisi}</td>
                   <td>${item.jenis}</td>
                   <td>${item.blok}</td>
+                  <td>${item.luas}</td>
                   <td>${item.volume}</td>
                   <td>${item.hk}</td>
+                  <td>${item.bahan}</td>
                   <td>${item.pengawas}</td>
                   <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
                 </tr>`;
