@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
     // Hapus class warna lama
-      clone.classList.remove("bg-light", "bg-white");
+      clone.classList.remove("bg-success", "bg-primary");
     
       // Tambahkan warna berbeda berdasarkan urutan
       const groupCount = wrapper.querySelectorAll(".pekerjaan-group").length;
