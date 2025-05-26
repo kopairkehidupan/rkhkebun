@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clone = lastGroup.cloneNode(true);
   
     clone.querySelectorAll("input").forEach(input => input.value = "");
-    clone.querySelector(".btn-hapus").addEventListener("click", () => clone.remove());
+    clone.querySelector(".btn-hapus-input").addEventListener("click", () => clone.remove());
   
     wrapper.appendChild(clone);
   });
