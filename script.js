@@ -40,7 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   document.querySelectorAll(".btn-hapus-input").forEach(btn => {
-    btn.addEventListener("click", () => btn.closest(".pekerjaan-group").remove());
+    btn.addEventListener("click", () => {
+    const group = btn.closest(".pekerjaan-group");
+    if (document.querySelectorAll(".pekerjaan-group").length > 1) {
+      group.remove();
+    } else {
+      showToast("Minimal 1 pekerjaan harus ada", "error");
+    }
+  });
   });
 
   // ==== FORM RKH ====
