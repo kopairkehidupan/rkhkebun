@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const index = button.getAttribute("data-index");
                 const bulan = bulanInput.value;
 
-                showToast("Klik untuk konfirmasi hapus data", "confirm", () => {
+                showToast("Tekan disini untuk konfirmasi hapus data", "confirm", () => {
                   fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
                     method: "GET",
                   })
