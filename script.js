@@ -39,10 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(clone);
   });
   
-  document.querySelectorAll(".btn-hapus").forEach(btn => {
-    btn.addEventListener("click", () => btn.closest(".pekerjaan-group").remove());
+  document.querySelectorAll(".btn-hapus-input").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.closest(".pekerjaan-group");
+      if (document.querySelectorAll(".pekerjaan-group").length > 1) {
+        group.remove();
+      } else {
+        showToast("Minimal 1 pekerjaan harus ada", "error");
+      }
+    });
   });
-
 
   // ==== FORM RKH ====
   if (form && toast) {
@@ -136,27 +142,27 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             // Listener tombol hapus
-            document.querySelectorAll(".btn-hapus").forEach(button => {
-              button.addEventListener("click", () => {
-                const index = button.getAttribute("data-index");
-                const bulan = bulanInput.value;
-
-                showToast("Tekan disini untuk konfirmasi hapus data", "confirm", () => {
-                  fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
-                    method: "GET",
+            document.querySelectorAll(".btn-hapus-laporan").forEach(button => {
+            button.addEventListener("click", () => {
+              const index = button.getAttribute("data-index");
+              const bulan = bulanInput.value;
+          
+              showToast("Tekan disini untuk konfirmasi hapus data", "confirm", () => {
+                fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
+                  method: "GET",
+                })
+                  .then(res => res.text())
+                  .then(msg => {
+                    showToast(msg, "success");
+                    btnCari.click(); // refresh data
                   })
-                    .then(res => res.text())
-                    .then(msg => {
-                      showToast(msg, "success");
-                      btnCari.click(); // refresh data
-                    })
-                    .catch(err => {
-                      console.error("Gagal menghapus data:", err);
-                      showToast("Terjadi kesalahan saat menghapus", "error");
-                    });
-                });
+                  .catch(err => {
+                    console.error("Gagal menghapus data:", err);
+                    showToast("Terjadi kesalahan saat menghapus", "error");
+                  });
               });
             });
+          });
           }
         })
         .catch(err => {
