@@ -40,16 +40,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
   
-    // Warna rotasi
-    const alertClasses = ["alert alert-primary", "alert alert-success", "alert alert-info", "alert alert-danger", "alert alert-warning"];
+    // Warna rotasi (array berisi array of class)
+    const alertClasses = [
+      ["alert", "alert-primary"],
+      ["alert", "alert-success"],
+      ["alert", "alert-info"],
+      ["alert", "alert-danger"],
+      ["alert", "alert-warning"]
+    ];
+  
+    // Hapus kelas alert lama
+    clone.classList.remove("alert", "alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
+  
+    // Tambah kelas baru berdasarkan indeks rotasi
     const allGroups = wrapper.querySelectorAll(".pekerjaan-group");
-  
-    // Hapus warna lama
-    alertClasses.forEach(w => clone.classList.remove(w));
-  
-    // Hitung indeks warna berdasarkan jumlah grup
     const colorIndex = allGroups.length % alertClasses.length;
-    clone.classList.add(alertClasses[colorIndex]);
+    clone.classList.add(...alertClasses[colorIndex]);
   
     wrapper.appendChild(clone);
   });
