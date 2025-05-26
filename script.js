@@ -44,3 +44,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+  // Fitur Laporan RKH
+  const btnCari = document.getElementById("btn-cari");
+  const bulanInput = document.getElementById("bulan");
+  const tbody = document.querySelector("#tabel-laporan tbody");
+
+  if (btnCari && bulanInput && tbody) {
+    btnCari.addEventListener("click", () => {
+      const bulan = bulanInput.value;
+      if (!bulan) {
+        alert("Silakan pilih bulan terlebih dahulu");
+        return;
+      }
+
+      fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
+        .then(res => res.json())
+        .then(data => {
+          tbody.innerHTML = "";
+          if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data untuk bulan ini</td></tr>`;
+          } else {
+            data.forEach(item => {
+              tbody.innerHTML += `
+                <tr>
+                  <td>${item.tanggal}</td>
+                  <td>${item.kebun}</td>
+                  <td>${item.divisi}</td>
+                  <td>${item.jenis}</td>
+                  <td>${item.blok}</td>
+                  <td>${item.volume}</td>
+                  <td>${item.hk}</td>
+                  <td>${item.pengawas}</td>
+                </tr>`;
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Gagal mengambil data:", err);
+          alert("Terjadi kesalahan saat mengambil data.");
+        });
+    });
+  }
+
+
