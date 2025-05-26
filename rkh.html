@@ -43,27 +43,40 @@
         <input type="date" class="form-control" id="tanggal" name="tanggal" required>
       </div>
 
-        <div class="table-responsive">
-        <table id="tabel-pekerjaan" class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Jenis</th><th>Blok</th><th>Luas</th><th>Volume</th><th>HK</th><th>Bahan</th><th>Penanggung Jawab</th><th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input name="jenis[]" class="form-control" required></td>
-              <td><input name="blok[]" class="form-control" required></td>
-              <td><input name="luas[]" class="form-control" required></td>
-              <td><input name="volume[]" class="form-control" required></td>
-              <td><input name="hk[]" class="form-control" required></td>
-              <td><input name="bahan[]" class="form-control"></td>
-              <td><input name="penanggung_jawab[]" class="form-control" required></td>
-              <td><button type="button" class="btn btn-danger btn-hapus">Hapus</button></td>
-            </tr>
-          </tbody>
-        </table>
+    <div id="pekerjaan-wrapper">
+      <div class="pekerjaan-group border rounded p-3 mb-3">
+        <div class="mb-2">
+          <label>Jenis</label>
+          <input name="jenis[]" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label>Blok</label>
+          <input name="blok[]" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label>Luas</label>
+          <input name="luas[]" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label>Volume</label>
+          <input name="volume[]" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label>HK</label>
+          <input name="hk[]" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label>Bahan</label>
+          <input name="bahan[]" class="form-control">
+        </div>
+        <div class="mb-2">
+          <label>Penanggung Jawab</label>
+          <input name="penanggung_jawab[]" class="form-control" required>
+        </div>
+        <button type="button" class="btn btn-danger btn-hapus">Hapus Pekerjaan</button>
       </div>
+    </div>
+      
       <button type="button" class="btn btn-secondary mb-3" id="btn-tambah">+ Tambah Pekerjaan</button>
       <button type="submit" class="btn btn-success w-100">Buat</button>
     </form>
