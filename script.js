@@ -64,7 +64,7 @@ if (btnCari && bulanInput && tbody) {
           if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="8" class="text-center">Tidak ada data untuk bulan ini</td></tr>`;
           } else {
-            data.forEach(item => {
+            data.forEach((item, index) => {
               tbody.innerHTML += `
                 <tr>
                   <td>${item.tanggal}</td>
