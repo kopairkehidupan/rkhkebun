@@ -40,6 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
+    // Hapus class warna lama
+      clone.classList.remove("bg-light", "bg-white");
+    
+      // Tambahkan warna berbeda berdasarkan urutan
+      const groupCount = wrapper.querySelectorAll(".pekerjaan-group").length;
+      const isGenap = groupCount % 2 === 0;
+      clone.classList.add(isGenap ? "bg-success" : "bg-primary");
+    
     wrapper.appendChild(clone);
   });
 
