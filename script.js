@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // === TAMBAH PEKERJAAN ===
   document.getElementById("btn-tambah")?.addEventListener("click", () => {
     const wrapper = document.getElementById("pekerjaan-wrapper");
     const lastGroup = wrapper?.querySelector(".pekerjaan-group:last-child");
