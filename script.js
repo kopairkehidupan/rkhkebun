@@ -1,25 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ==== FORM RKH ====
   const form = document.getElementById("form-pekerjaan");
   const toast = document.getElementById("toast");
+  const toastIcon = toast?.querySelector(".toast-icon");
+  const toastMessage = toast?.querySelector(".toast-message");
 
-  if (form && toast) {
-    const toastIcon = toast.querySelector(".toast-icon");
-    const toastMessage = toast.querySelector(".toast-message");
+  // Fungsi toast universal
+  function showToast(message, type = "success", onClick = null) {
+    if (!toast) return;
 
-    function showToast(message, type = "success") {
-      toastMessage.textContent = message;
-      toastIcon.textContent = type === "success" ? "✔️" : "❌";
-      toast.className = "toast show " + type;
+    toastMessage.textContent = message;
+    toastIcon.textContent = type === "success" ? "✔️" : type === "error" ? "❌" : "⚠️";
+    toast.className = "toast show " + type;
 
+    if (onClick) {
+      toast.onclick = () => {
+        toast.classList.remove("show");
+        onClick();
+        toast.onclick = null;
+      };
+    } else {
       setTimeout(() => {
         toast.classList.add("hide");
         setTimeout(() => {
           toast.className = "toast " + type;
         }, 400);
-      }, 5000);
+      }, 4000);
     }
+  }
 
+  // ==== FORM RKH ====
+  if (form && toast) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       const formData = new FormData(form);
@@ -53,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnCari.addEventListener("click", () => {
       const bulan = bulanInput.value;
       if (!bulan) {
-        alert("Silakan pilih bulan terlebih dahulu");
+        showToast("Silakan pilih bulan terlebih dahulu", "error");
         return;
       }
 
@@ -80,34 +90,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 </tr>`;
             });
 
-            // Pasang listener ke tombol hapus
+            // Listener tombol hapus
             document.querySelectorAll(".btn-hapus").forEach(button => {
-            button.addEventListener("click", () => {
-              const konfirmasi = confirm("Yakin ingin menghapus data ini?");
-              if (!konfirmasi) return;
-          
-              const index = button.getAttribute("data-index");
-              const bulan = document.getElementById("bulan").value;
-          
-              fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
-                method: "GET",
-              })
-                .then(res => res.text())
-                .then(msg => {
-                  alert(msg);
-                  btnCari.click(); // Refresh data setelah hapus
-                })
-                .catch(err => {
-                  console.error("Gagal menghapus data:", err);
-                  alert("Terjadi kesalahan saat menghapus.");
+              button.addEventListener("click", () => {
+                const index = button.getAttribute("data-index");
+                const bulan = bulanInput.value;
+
+                showToast("Klik untuk konfirmasi hapus data", "confirm", () => {
+                  fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
+                    method: "GET",
+                  })
+                    .then(res => res.text())
+                    .then(msg => {
+                      showToast(msg, "success");
+                      btnCari.click(); // refresh data
+                    })
+                    .catch(err => {
+                      console.error("Gagal menghapus data:", err);
+                      showToast("Terjadi kesalahan saat menghapus", "error");
+                    });
                 });
+              });
             });
-          });
           }
         })
         .catch(err => {
           console.error("Gagal mengambil data:", err);
-          alert("Terjadi kesalahan saat mengambil data.");
+          showToast("Terjadi kesalahan saat mengambil data", "error");
         });
     });
   }
