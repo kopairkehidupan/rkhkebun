@@ -8,34 +8,28 @@
   <link rel="stylesheet" href="stylelaporanrkh.css" />
   <style>
     body {
-      padding-top: 50px; /* memberi ruang agar konten tidak tertutup navbar */
+      padding-top: 50px;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar fixed di atas -->
   <nav class="navbar navbar-expand-sm bg-light navbar-dark fixed-top">
     <div class="container">
-      <a href="index.html" class="btn btn-outline-dark">
-        ← Kembali
-      </a>
+      <a href="index.html" class="btn btn-outline-dark">← Kembali</a>
     </div>
   </nav>
 
   <div class="container py-4">
     <h2 class="text-center mb-4">Laporan RKH</h2>
 
-    <!-- Card sebagai pembungkus -->
     <div class="border border-primary rounded p-3 mb-4">
       <h5 class="text-primary fw-bold mb-3">Pilih Salah Satu</h5>
-  
-      <!-- Grouping untuk pilih bulan -->
+
       <div class="alert alert-primary mb-3">
         <label for="bulan" class="form-label">Pilih Bulan</label>
         <input type="month" class="form-control" id="bulan" />
       </div>
-      
-      <!-- Grouping untuk rentang tanggal -->
+
       <div class="alert alert-warning">
         <label class="form-label">Pilih Tanggal</label>
         <div class="row">
@@ -50,8 +44,16 @@
         </div>
       </div>
     </div>
- 
+
     <button class="btn btn-primary mb-4" id="btn-cari">Tampilkan</button>
+
+    <!-- Progress Bar -->
+    <div class="progress mb-3" style="height: 25px; display: none;" id="progress-wrapper">
+      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        0%
+      </div>
+    </div>
 
     <div class="table-responsive">
       <table class="table table-bordered table-striped" id="tabel-laporan">
@@ -74,10 +76,12 @@
       </table>
     </div>
   </div>
+
   <div id="toast" class="toast">
     <div class="toast-icon">✔️</div>
     <div class="toast-message">Notifikasi</div>
   </div>
-<script src="script.js" defer></script>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
