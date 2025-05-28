@@ -171,34 +171,34 @@ document.addEventListener("DOMContentLoaded", () => {
           let totalHK = 0;
 
           data.forEach((item, index) => {
-            const percent = Math.floor(((index + 1) / data.length) * 100);
-            progressBar.style.width = `${percent}%`;
-            progressBar.textContent = `${percent}%`;
-            progressBar.setAttribute("aria-valuenow", percent);
-
-            const luasVal = parseFloat(item.luas) || 0;
-            const volumeVal = parseFloat(item.volume) || 0;
-            const hkVal = parseFloat(item.hk) || 0;
-
-            totalLuas += luasVal;
-            totalVolume += volumeVal;
-            totalHK += hkVal;
-
-            tbody.innerHTML += `
-              <tr>
-                <td>${item.tanggal}</td>
-                <td>${item.kebun}</td>
-                <td>${item.divisi}</td>
-                <td>${item.jenis}</td>
-                <td>${item.blok}</td>
-                <td class="text-end">${item.luas}</td>
-                <td class="text-end">${item.volume}</td>
-                <td class="text-end">${item.hk}</td>
-                <td>${item.bahan}</td>
-                <td>${item.pengawas}</td>
-                <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
-              </tr>`;
-          });
+          const percent = Math.floor(((index + 1) / data.length) * 100);
+          progressBar.style.width = `${percent}%`;
+          progressBar.textContent = `${percent}%`;
+          progressBar.setAttribute("aria-valuenow", percent);
+        
+          const luasVal = parseFloat(item.luas) || 0;
+          const volumeVal = parseFloat(item.volume) || 0;
+          const hkVal = parseFloat(item.hk) || 0;
+        
+          totalLuas += luasVal;
+          totalVolume += volumeVal;
+          totalHK += hkVal;
+        
+          tbody.innerHTML += `
+            <tr>
+              <td>${item.tanggal}</td>
+              <td>${item.kebun}</td>
+              <td>${item.divisi}</td>
+              <td>${item.jenis}</td>
+              <td>${item.blok}</td>
+              <td class="text-end">${luasVal.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td class="text-end">${volumeVal.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td class="text-end">${Math.round(hkVal).toLocaleString("id-ID")}</td>
+              <td>${item.bahan}</td>
+              <td>${item.pengawas}</td>
+              <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
+            </tr>`;
+        });
 
           // Tambahkan baris total
           tbody.innerHTML += `
