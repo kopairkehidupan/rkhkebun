@@ -150,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
         url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?tanggal_mulai=${mulai}&tanggal_akhir=${akhir}`;
       }
 
-      // Tampilkan progress bar
       progressWrapper.style.display = "block";
       progressBar.style.width = "0%";
       progressBar.textContent = "0%";
@@ -167,11 +166,23 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
           }
 
+          let totalLuas = 0;
+          let totalVolume = 0;
+          let totalHK = 0;
+
           data.forEach((item, index) => {
             const percent = Math.floor(((index + 1) / data.length) * 100);
             progressBar.style.width = `${percent}%`;
             progressBar.textContent = `${percent}%`;
             progressBar.setAttribute("aria-valuenow", percent);
+
+            const luasVal = parseFloat(item.luas) || 0;
+            const volumeVal = parseFloat(item.volume) || 0;
+            const hkVal = parseFloat(item.hk) || 0;
+
+            totalLuas += luasVal;
+            totalVolume += volumeVal;
+            totalHK += hkVal;
 
             tbody.innerHTML += `
               <tr>
@@ -189,10 +200,21 @@ document.addEventListener("DOMContentLoaded", () => {
               </tr>`;
           });
 
+          // Tambahkan baris total
+          tbody.innerHTML += `
+            <tr class="table-success fw-bold">
+              <td colspan="5" class="text-end">Total</td>
+              <td>${totalLuas.toFixed(2)}</td>
+              <td>${totalVolume.toFixed(2)}</td>
+              <td>${totalHK.toFixed(2)}</td>
+              <td colspan="3"></td>
+            </tr>`;
+
           setTimeout(() => {
             progressWrapper.style.display = "none";
           }, 400);
 
+          // Event hapus
           document.querySelectorAll(".btn-hapus-laporan").forEach(button => {
             button.addEventListener("click", () => {
               const index = button.getAttribute("data-index");
