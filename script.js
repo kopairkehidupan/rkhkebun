@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const toast = document.getElementById("toast");
   const toastIcon = toast?.querySelector(".toast-icon");
   const toastMessage = toast?.querySelector(".toast-message");
+  const progressWrapper = document.getElementById("progress-wrapper");
+  const progressBar = document.getElementById("progress-bar");
 
   function showToast(message, type = "success", onClick = null) {
     if (!toast) return;
@@ -145,9 +147,14 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("Silakan pilih bulan atau rentang tanggal dengan lengkap", "error");
         return;
       } else {
-        // Jika semua diisi, tetap prioritaskan rentang tanggal
         url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?tanggal_mulai=${mulai}&tanggal_akhir=${akhir}`;
       }
+
+      // Tampilkan progress bar
+      progressWrapper.style.display = "block";
+      progressBar.style.width = "0%";
+      progressBar.textContent = "0%";
+      progressBar.setAttribute("aria-valuenow", "0");
 
       fetch(url)
         .then(res => res.json())
@@ -156,10 +163,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="11" class="text-center">Tidak ada data ditemukan</td></tr>`;
+            progressWrapper.style.display = "none";
             return;
           }
 
           data.forEach((item, index) => {
+            const percent = Math.floor(((index + 1) / data.length) * 100);
+            progressBar.style.width = `${percent}%`;
+            progressBar.textContent = `${percent}%`;
+            progressBar.setAttribute("aria-valuenow", percent);
+
             tbody.innerHTML += `
               <tr>
                 <td>${item.tanggal}</td>
@@ -175,6 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
               </tr>`;
           });
+
+          setTimeout(() => {
+            progressWrapper.style.display = "none";
+          }, 400);
 
           document.querySelectorAll(".btn-hapus-laporan").forEach(button => {
             button.addEventListener("click", () => {
@@ -208,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => {
           console.error("Gagal mengambil data:", err);
           showToast("Terjadi kesalahan saat mengambil data", "error");
+          progressWrapper.style.display = "none";
         });
     });
   }
