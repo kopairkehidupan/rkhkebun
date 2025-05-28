@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Tambahkan baris total
           tbody.innerHTML += `
             <tr class="table-success fw-bold">
-              <td colspan="5" class="text-end">Total</td>
+              <td colspan="5" class="text-center">Total</td>
               <td class="text-end">${totalLuas.toFixed(2)}</td>
               <td class="text-end">${totalVolume.toFixed(2)}</td>
               <td class="text-end">${totalHK.toFixed(2)}</td>
