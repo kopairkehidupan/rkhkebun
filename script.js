@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const toastIcon = toast?.querySelector(".toast-icon");
   const toastMessage = toast?.querySelector(".toast-message");
 
-  // Fungsi toast universal
   function showToast(message, type = "success", onClick = null) {
     if (!toast) return;
 
@@ -138,13 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let url = "";
 
-      if (mulai && akhir) {
+      if (mulai && akhir && !bulan) {
         url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?tanggal_mulai=${mulai}&tanggal_akhir=${akhir}`;
-      } else if (bulan) {
+      } else if (bulan && !mulai && !akhir) {
         url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`;
-      } else {
-        showToast("Pilih bulan atau rentang tanggal terlebih dahulu", "error");
+      } else if (!bulan && (!mulai || !akhir)) {
+        showToast("Silakan pilih bulan atau rentang tanggal dengan lengkap", "error");
         return;
+      } else {
+        // Jika semua diisi, tetap prioritaskan rentang tanggal
+        url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?tanggal_mulai=${mulai}&tanggal_akhir=${akhir}`;
       }
 
       fetch(url)
@@ -181,17 +183,19 @@ document.addEventListener("DOMContentLoaded", () => {
               showToast("Tekan disini untuk konfirmasi hapus data", "confirm", () => {
                 let hapusUrl = "";
 
-                if (mulai && akhir) {
+                if (mulai && akhir && (!bulan || bulan === "")) {
                   hapusUrl = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus_tanggal=${mulai}&akhir=${akhir}&index=${index}`;
-                } else if (bulan) {
+                } else if (bulan && (!mulai || !akhir)) {
                   hapusUrl = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`;
+                } else {
+                  hapusUrl = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus_tanggal=${mulai}&akhir=${akhir}&index=${index}`;
                 }
 
                 fetch(hapusUrl)
                   .then(res => res.text())
                   .then(msg => {
                     showToast(msg, "success");
-                    btnCari.click(); // refresh data
+                    btnCari.click(); // Refresh
                   })
                   .catch(err => {
                     console.error("Gagal menghapus data:", err);
