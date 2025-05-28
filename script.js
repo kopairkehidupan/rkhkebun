@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
           tbody.innerHTML += `
             <tr>
-              <td>${formatTanggalIndonesia(item.tanggal)}</td>
+              <td class="text-end">${formatTanggalIndonesia(item.tanggal)}</td>
               <td>${item.kebun}</td>
               <td>${item.divisi}</td>
               <td>${item.jenis}</td>
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Tambahkan baris total
           tbody.innerHTML += `
           <tr class="table-success fw-bold">
-            <td colspan="5" class="text-end">Total</td>
+            <td colspan="5" class="text-center">Total</td>
             <td class="text-end">${totalLuas.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td class="text-end">${totalVolume.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td class="text-end">${Math.round(totalHK).toLocaleString("id-ID")}</td>
