@@ -25,19 +25,23 @@
   <div class="container py-4">
     <h2 class="text-center mb-4">Laporan RKH</h2>
 
-    <div class="mb-3">
+    <!-- Grouping untuk pilih bulan -->
+    <div class="alert alert-primary mb-3">
       <label for="bulan" class="form-label">Pilih Bulan</label>
       <input type="month" class="form-control" id="bulan" />
     </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="tanggalMulai" class="form-label">Tanggal Mulai</label>
-        <input type="date" class="form-control" id="tanggalMulai" />
-      </div>
-      <div class="col-md-6">
-        <label for="tanggalAkhir" class="form-label">Tanggal Akhir</label>
-        <input type="date" class="form-control" id="tanggalAkhir" />
+    
+    <!-- Grouping untuk rentang tanggal -->
+    <div class="alert alert-warning mb-3">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="tanggalMulai" class="form-label">Tanggal Mulai</label>
+          <input type="date" class="form-control" id="tanggalMulai" />
+        </div>
+        <div class="col-md-6">
+          <label for="tanggalAkhir" class="form-label">Tanggal Akhir</label>
+          <input type="date" class="form-control" id="tanggalAkhir" />
+        </div>
       </div>
     </div>
  
