@@ -191,9 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${item.divisi}</td>
                 <td>${item.jenis}</td>
                 <td>${item.blok}</td>
-                <td>${item.luas}</td>
-                <td>${item.volume}</td>
-                <td>${item.hk}</td>
+                <td class="text-end">${item.luas}</td>
+                <td class="text-end">${item.volume}</td>
+                <td class="text-end">${item.hk}</td>
                 <td>${item.bahan}</td>
                 <td>${item.pengawas}</td>
                 <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
@@ -204,9 +204,9 @@ document.addEventListener("DOMContentLoaded", () => {
           tbody.innerHTML += `
             <tr class="table-success fw-bold">
               <td colspan="5" class="text-end">Total</td>
-              <td>${totalLuas.toFixed(2)}</td>
-              <td>${totalVolume.toFixed(2)}</td>
-              <td>${totalHK.toFixed(2)}</td>
+              <td class="text-end">${totalLuas.toFixed(2)}</td>
+              <td class="text-end">${totalVolume.toFixed(2)}</td>
+              <td class="text-end">${totalHK.toFixed(2)}</td>
               <td colspan="3"></td>
             </tr>`;
 
