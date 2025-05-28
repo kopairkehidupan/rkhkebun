@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
           tbody.innerHTML += `
             <tr>
-              <td>${item.tanggal}</td>
+              <td>${formatTanggalIndonesia(item.tanggal)}</td>
               <td>${item.kebun}</td>
               <td>${item.divisi}</td>
               <td>${item.jenis}</td>
@@ -198,7 +198,16 @@ document.addEventListener("DOMContentLoaded", () => {
               <td>${item.pengawas}</td>
               <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
             </tr>`;
-        });
+          });
+
+          function formatTanggalIndonesia(tanggalString) {
+            const tanggal = new Date(tanggalString);
+            return tanggal.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            });
+          }
 
           // Tambahkan baris total
           tbody.innerHTML += `
