@@ -28,19 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ==== TAMBAH INPUT PEKERJAAN ====
   document.getElementById("btn-tambah")?.addEventListener("click", () => {
     const wrapper = document.getElementById("pekerjaan-wrapper");
     const lastGroup = wrapper?.querySelector(".pekerjaan-group:last-child");
-  
+
     if (!lastGroup) {
       showToast("Tidak ada entri yang bisa digandakan!", "error");
       return;
     }
-  
+
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
-  
-    // Warna rotasi (array berisi array of class)
+
     const alertClasses = [
       ["alert", "alert-primary"],
       ["alert", "alert-success"],
@@ -48,19 +48,17 @@ document.addEventListener("DOMContentLoaded", () => {
       ["alert", "alert-danger"],
       ["alert", "alert-warning"]
     ];
-  
-    // Hapus kelas alert lama
+
     clone.classList.remove("alert", "alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
-  
-    // Tambah kelas baru berdasarkan indeks rotasi
+
     const allGroups = wrapper.querySelectorAll(".pekerjaan-group");
     const colorIndex = allGroups.length % alertClasses.length;
     clone.classList.add(...alertClasses[colorIndex]);
-  
+
     wrapper.appendChild(clone);
   });
 
-  // === DELEGASI EVENT UNTUK TOMBOL HAPUS INPUT ===
+  // ==== HAPUS INPUT PEKERJAAN ====
   document.getElementById("pekerjaan-wrapper")?.addEventListener("click", (e) => {
     if (e.target.classList.contains("btn-hapus-input")) {
       const group = e.target.closest(".pekerjaan-group");
@@ -72,17 +70,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ==== FORM RKH ====
+  // ==== SUBMIT FORM ====
   if (form && toast) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-    
+
       const formData = new FormData(form);
-    
       const kebun = formData.get("kebun");
       const divisi = formData.get("divisi");
       const tanggal = formData.get("tanggal");
-    
+
       const jenis = formData.getAll("jenis[]");
       const blok = formData.getAll("blok[]");
       const luas = formData.getAll("luas[]");
@@ -90,9 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const hk = formData.getAll("hk[]");
       const bahan = formData.getAll("bahan[]");
       const pengawas = formData.getAll("penanggung_jawab[]");
-    
+
       let promises = [];
-    
+
       for (let i = 0; i < jenis.length; i++) {
         const data = new URLSearchParams({
           kebun,
@@ -106,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
           bahan: bahan[i],
           penanggung_jawab: pengawas[i],
         });
-    
+
         promises.push(
           fetch("https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec", {
             method: "POST",
@@ -114,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }).then(res => res.text())
         );
       }
-    
+
       Promise.all(promises)
         .then(() => {
           showToast("Semua data berhasil disimpan", "success");
@@ -124,57 +121,73 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast("Gagal menyimpan: " + err.message, "error");
         });
     });
-
   }
 
   // ==== LAPORAN RKH ====
   const btnCari = document.getElementById("btn-cari");
   const bulanInput = document.getElementById("bulan");
+  const tanggalMulaiInput = document.getElementById("tanggalMulai");
+  const tanggalAkhirInput = document.getElementById("tanggalAkhir");
   const tbody = document.querySelector("#tabel-laporan tbody");
 
-  if (btnCari && bulanInput && tbody) {
+  if (btnCari && tbody) {
     btnCari.addEventListener("click", () => {
       const bulan = bulanInput.value;
-      if (!bulan) {
-        showToast("Silakan pilih bulan terlebih dahulu", "error");
+      const mulai = tanggalMulaiInput.value;
+      const akhir = tanggalAkhirInput.value;
+
+      let url = "";
+
+      if (mulai && akhir) {
+        url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?tanggal_mulai=${mulai}&tanggal_akhir=${akhir}`;
+      } else if (bulan) {
+        url = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`;
+      } else {
+        showToast("Pilih bulan atau rentang tanggal terlebih dahulu", "error");
         return;
       }
 
-      fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?bulan=${bulan}`)
+      fetch(url)
         .then(res => res.json())
         .then(data => {
           tbody.innerHTML = "";
 
           if (data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="9" class="text-center">Tidak ada data untuk bulan ini</td></tr>`;
-          } else {
-            data.forEach((item, index) => {
-              tbody.innerHTML += `
-                <tr>
-                  <td>${item.tanggal}</td>
-                  <td>${item.kebun}</td>
-                  <td>${item.divisi}</td>
-                  <td>${item.jenis}</td>
-                  <td>${item.blok}</td>
-                  <td>${item.luas}</td>
-                  <td>${item.volume}</td>
-                  <td>${item.hk}</td>
-                  <td>${item.bahan}</td>
-                  <td>${item.pengawas}</td>
-                  <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
-                </tr>`;
-            });
+            tbody.innerHTML = `<tr><td colspan="11" class="text-center">Tidak ada data ditemukan</td></tr>`;
+            return;
+          }
 
-            // Listener tombol hapus
-            document.querySelectorAll(".btn-hapus-laporan").forEach(button => {
+          data.forEach((item, index) => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${item.tanggal}</td>
+                <td>${item.kebun}</td>
+                <td>${item.divisi}</td>
+                <td>${item.jenis}</td>
+                <td>${item.blok}</td>
+                <td>${item.luas}</td>
+                <td>${item.volume}</td>
+                <td>${item.hk}</td>
+                <td>${item.bahan}</td>
+                <td>${item.pengawas}</td>
+                <td><button class="btn btn-sm btn-danger btn-hapus-laporan" data-index="${index}">Hapus</button></td>
+              </tr>`;
+          });
+
+          document.querySelectorAll(".btn-hapus-laporan").forEach(button => {
             button.addEventListener("click", () => {
               const index = button.getAttribute("data-index");
-              const bulan = bulanInput.value;
-          
+
               showToast("Tekan disini untuk konfirmasi hapus data", "confirm", () => {
-                fetch(`https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`, {
-                  method: "GET",
-                })
+                let hapusUrl = "";
+
+                if (mulai && akhir) {
+                  hapusUrl = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus_tanggal=${mulai}&akhir=${akhir}&index=${index}`;
+                } else if (bulan) {
+                  hapusUrl = `https://script.google.com/macros/s/AKfycbywkqNEpDPrgDw5RdYhIivwjnEX7kjpKjWwfBuM20D-vrrbR7yQGL45qXQKrE2GSo3Khw/exec?hapus=${bulan}&index=${index}`;
+                }
+
+                fetch(hapusUrl)
                   .then(res => res.text())
                   .then(msg => {
                     showToast(msg, "success");
@@ -187,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
               });
             });
           });
-          }
         })
         .catch(err => {
           console.error("Gagal mengambil data:", err);
