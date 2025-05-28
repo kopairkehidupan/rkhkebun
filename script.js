@@ -187,8 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
           tbody.innerHTML += `
             <tr>
               <td class="text-end">${formatTanggalIndonesia(item.tanggal)}</td>
-              <td>${item.kebun}</td>
-              <td>${item.divisi}</td>
+              <td class="text-center">${item.kebun}</td>
+              <td class="text-center">${item.divisi}</td>
               <td>${item.jenis}</td>
               <td>${item.blok}</td>
               <td class="text-end">${luasVal.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
