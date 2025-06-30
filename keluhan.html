@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Keluhan Pemanen</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      padding-top: 50px; /* memberi ruang agar konten tidak tertutup navbar */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar fixed di atas -->
+  <nav class="navbar navbar-expand-sm bg-light navbar-dark fixed-top">
+    <div class="container">
+      <a href="index.html" class="btn btn-outline-dark">
+        ← Kembali
+      </a>
+    </div>
+  </nav>
+
+  <!-- Judul di bawah navbar -->
+  <div class="container py-4">
+    <h2 class="mb-4 text-center">Form Keluhan Pemanen</h2>
+
+    <form id="form-keluhan">
+      <div class="mb-3">
+        <label for="kebun" class="form-label">Kebun</label>
+        <input type="text" class="form-control" id="kebun" name="kebun" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="divisi" class="form-label">Divisi</label>
+        <input type="text" class="form-control" id="divisi" name="divisi" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="blok" class="form-label">Blok</label>
+        <input type="text" class="form-control" id="blok" name="blok" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="pemanen" class="form-label">Pemanen</label>
+        <input type="text" class="form-control" id="pemanen" name="pemanen" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="pp" class="form-label">PP</label>
+        <input type="text" class="form-control" id="pp" name="pp" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="tanggal" class="form-label">Tanggal Keluhan</label>
+        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="keluhan" class="form-label">Keluhan Pemanen</label>
+        <textarea class="form-control" id="keluhan" name="keluhan" rows="3" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="foto_keluhan" class="form-label">Foto Keluhan</label>
+        <input type="file" class="form-control" id="foto_keluhan" name="foto_keluhan" accept="image/*" capture="environment">
+      </div>
+
+      <h4 class="mt-4 mb-3">Perbaikan</h4>
+
+      <div id="perbaikan-wrapper">
+        <div class="perbaikan-group border rounded p-3 mb-3 alert alert-primary">
+          <div class="mb-2">
+            <label>Deskripsi Perbaikan</label>
+            <textarea name="perbaikan[]" class="form-control" rows="2" required></textarea>
+          </div>
+          <div class="mb-2">
+            <label>Tanggal Perbaikan</label>
+            <input type="date" name="tanggal_perbaikan[]" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Foto Perbaikan</label>
+            <input type="file" name="foto_perbaikan[]" class="form-control" accept="image/*" capture="environment">
+          </div>
+          <button type="button" class="btn btn-danger btn-hapus-input">Hapus Perbaikan</button>
+        </div>
+      </div>
+      
+      <button type="button" class="btn btn-primary mb-3" id="btn-tambah">+ Tambah Perbaikan</button>
+      <button type="submit" class="btn btn-success w-100">Simpan</button>
+    </form>
+  </div>
+
+  <!-- Toast sukses -->
+  <div id="toast" class="toast">
+    <div class="toast-icon">✔️</div>
+    <div class="toast-message">Data berhasil disimpan</div>
+  </div>
+
+  <script src="script.js" defer></script>
+  <script src="bootstrap.bundle.min.js"></script>
+</body>
+</html>
