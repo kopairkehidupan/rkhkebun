@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       
       // Send to Google Apps Script
-      fetch("https://script.google.com/macros/s/YOUR_KELUHAN_SCRIPT_ID/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
         method: "POST",
         body: data
       })
