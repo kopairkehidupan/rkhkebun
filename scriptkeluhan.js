@@ -37,7 +37,7 @@ if (keluhanForm) {
     
     // Here you would typically send this data to your server/Google Apps Script
     // For example:
-    fetch("YOUR_GOOGLE_APPS_SCRIPT_URL", {
+    fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
       method: "POST",
       body: JSON.stringify(data)
     })
