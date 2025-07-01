@@ -90,16 +90,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const tanggalPerbaikan = formData.getAll("tanggal_perbaikan[]");
       const fotoPerbaikan = formData.getAll("foto_perbaikan[]");
       
-      // Prepare data for submission
-      const data = new URLSearchParams();
-      data.append("kebun", kebun);
-      data.append("divisi", divisi);
-      data.append("blok", blok);
-      data.append("pemanen", pemanen);
-      data.append("pp", pp);
-      data.append("tanggal", tanggal);
-      data.append("keluhan", keluhan);
-      data.append("foto_keluhan", fotoKeluhan.name);
+      // Ganti cara pengiriman data:
+      const data = {
+        kebun: kebun,
+        divisi: divisi,
+        blok: blok,
+        pemanen: pemanen,
+        pp: pp,
+        tanggal: tanggal,
+        keluhan: keluhan,
+        perbaikan: perbaikan,
+        tanggal_perbaikan: tanggalPerbaikan
+      };
       
       perbaikan.forEach((desc, i) => {
         data.append("perbaikan[]", desc);
@@ -110,7 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Send to Google Apps Script
       fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
         method: "POST",
-        body: data
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
       })
       .then(res => res.text())
       .then(response => {
