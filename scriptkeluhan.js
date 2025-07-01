@@ -144,12 +144,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Submit data
         const response = await fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data)
-        });
+         method: "POST",
+         mode: "no-cors", // Add this line
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data)
+         });
 
         const result = await response.text();
         showToast("Keluhan berhasil disimpan", "success");
