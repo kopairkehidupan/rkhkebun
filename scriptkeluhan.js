@@ -1,130 +1,167 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const keluhanForm = document.getElementById("form-keluhan");
+  // Toast notification
   const toast = document.getElementById("toast");
-  const toastIcon = toast?.querySelector(".toast-icon");
-  const toastMessage = toast?.querySelector(".toast-message");
-
-  // Toast notification function
-  function showToast(message, type = "success", onClick = null) {
-    if (!toast) return;
-
-    toastMessage.textContent = message;
-    toastIcon.textContent = type === "success" ? "✔️" : type === "error" ? "❌" : "⚠️";
-    toast.className = "toast show " + type;
-
-    if (onClick) {
-      toast.onclick = () => {
-        toast.classList.remove("show");
-        onClick();
-        toast.onclick = null;
-      };
-    } else {
-      setTimeout(() => {
-        toast.classList.add("hide");
-        setTimeout(() => {
-          toast.className = "toast " + type;
-        }, 400);
-      }, 4000);
-    }
+  
+  function showToast(message, type = "success") {
+    toast.querySelector(".toast-message").textContent = message;
+    toast.querySelector(".toast-icon").textContent = type === "success" ? "✔️" : "❌";
+    toast.className = `toast show ${type === "error" ? "error" : ""}`;
+    
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4000);
   }
 
-  // === TAMBAH INPUT PERBAIKAN ===
-  document.getElementById("btn-tambah")?.addEventListener("click", () => {
-    const wrapper = document.getElementById("perbaikan-wrapper");
-    const lastGroup = wrapper?.querySelector(".perbaikan-group:last-child");
-
-    if (!lastGroup) {
-      showToast("Tidak ada entri yang bisa digandakan!", "error");
-      return;
+  // Preview image
+  document.getElementById("foto_keluhan").addEventListener("change", function(e) {
+    const preview = document.getElementById("preview-keluhan");
+    const previewImg = document.getElementById("preview-keluhan-img");
+    
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        preview.style.display = "block";
+        previewImg.src = e.target.result;
+      }
+      
+      reader.readAsDataURL(this.files[0]);
     }
+  });
 
+  // Tambah input perbaikan
+  document.getElementById("btn-tambah").addEventListener("click", () => {
+    const wrapper = document.getElementById("perbaikan-wrapper");
+    const lastGroup = wrapper.querySelector(".perbaikan-group:last-child");
+    
     const clone = lastGroup.cloneNode(true);
     clone.querySelectorAll("input").forEach(input => input.value = "");
     clone.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
-
-    const alertClasses = [
-      ["alert", "alert-primary"],
-      ["alert", "alert-success"],
-      ["alert", "alert-info"],
-      ["alert", "alert-danger"],
-      ["alert", "alert-warning"]
-    ];
-
-    clone.classList.remove("alert", "alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
-
-    const allGroups = wrapper.querySelectorAll(".perbaikan-group");
-    const colorIndex = allGroups.length % alertClasses.length;
-    clone.classList.add(...alertClasses[colorIndex]);
-
+    clone.querySelector(".preview-perbaikan").style.display = "none";
+    
+    // Rotate alert colors
+    const colors = ["alert-primary", "alert-success", "alert-info", "alert-warning"];
+    const currentColor = Array.from(clone.classList).find(cls => cls.startsWith("alert-"));
+    const nextColor = colors[(colors.indexOf(currentColor) + 1] || colors[0];
+    
+    clone.classList.remove(currentColor);
+    clone.classList.add(nextColor);
+    
     wrapper.appendChild(clone);
+    
+    // Add preview for new file input
+    clone.querySelector("input[type='file']").addEventListener("change", function(e) {
+      const preview = this.closest(".perbaikan-group").querySelector(".preview-perbaikan");
+      const img = preview.querySelector("img");
+      
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          preview.style.display = "block";
+          img.src = e.target.result;
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
   });
 
-  // === HAPUS INPUT PERBAIKAN ===
-  document.getElementById("perbaikan-wrapper")?.addEventListener("click", (e) => {
+  // Hapus input perbaikan
+  document.getElementById("perbaikan-wrapper").addEventListener("click", (e) => {
     if (e.target.classList.contains("btn-hapus-input")) {
-      const group = e.target.closest(".perbaikan-group");
-      if (document.querySelectorAll(".perbaikan-group").length > 1) {
-        group.remove();
+      const groups = document.querySelectorAll(".perbaikan-group");
+      if (groups.length > 1) {
+        e.target.closest(".perbaikan-group").remove();
       } else {
-        showToast("Minimal 1 perbaikan harus ada", "error");
+        showToast("Minimal harus ada 1 perbaikan", "error");
       }
     }
   });
 
-  // === SUBMIT FORM KELUHAN ===
-  if (keluhanForm) {
-    keluhanForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(keluhanForm);
-      const kebun = formData.get("kebun");
-      const divisi = formData.get("divisi");
-      const blok = formData.get("blok");
-      const pemanen = formData.get("pemanen");
-      const pp = formData.get("pp");
-      const tanggal = formData.get("tanggal");
-      const keluhan = formData.get("keluhan");
-      const fotoKeluhan = formData.get("foto_keluhan");
-      
-      const perbaikan = formData.getAll("perbaikan[]");
-      const tanggalPerbaikan = formData.getAll("tanggal_perbaikan[]");
-      const fotoPerbaikan = formData.getAll("foto_perbaikan[]");
-      
-      // Ganti cara pengiriman data:
-      const data = {
-        kebun: kebun,
-        divisi: divisi,
-        blok: blok,
-        pemanen: pemanen,
-        pp: pp,
-        tanggal: tanggal,
-        keluhan: keluhan,
-        perbaikan: perbaikan,
-        tanggal_perbaikan: tanggalPerbaikan
+  // Form submission
+  document.getElementById("form-keluhan").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+    
+    try {
+      // Convert files to base64
+      const files = {
+        foto_keluhan: await fileToBase64(formData.get("foto_keluhan")),
+        foto_perbaikan: []
       };
       
-      perbaikan.forEach((desc, i) => {
-        data.append("perbaikan[]", desc);
-        data.append("tanggal_perbaikan[]", tanggalPerbaikan[i]);
-        data.append("foto_perbaikan[]", fotoPerbaikan[i]?.name || "");
-      });
+      // Convert all perbaikan files
+      const fotoPerbaikanFiles = formData.getAll("foto_perbaikan[]");
+      for (let i = 0; i < fotoPerbaikanFiles.length; i++) {
+        if (fotoPerbaikanFiles[i].size > 0) {
+          files.foto_perbaikan.push(await fileToBase64(fotoPerbaikanFiles[i]));
+        } else {
+          files.foto_perbaikan.push(null);
+        }
+      }
+      
+      // Prepare data
+      const data = {
+        kebun: formData.get("kebun"),
+        divisi: formData.get("divisi"),
+        blok: formData.get("blok"),
+        pemanen: formData.get("pemanen"),
+        pp: formData.get("pp"),
+        tanggal: formData.get("tanggal"),
+        keluhan: formData.get("keluhan"),
+        perbaikan: formData.getAll("perbaikan[]"),
+        tanggal_perbaikan: formData.getAll("tanggal_perbaikan[]"),
+        files: files
+      };
       
       // Send to Google Apps Script
-      fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
-      })
-      .then(res => res.text())
-      .then(response => {
-        showToast("Keluhan berhasil disimpan", "success");
-        keluhanForm.reset();
-      })
-      .catch(err => {
-        showToast("Gagal menyimpan keluhan: " + err.message, "error");
       });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        showToast("Data berhasil disimpan");
+        form.reset();
+        document.querySelectorAll(".preview-perbaikan, #preview-keluhan").forEach(el => {
+          el.style.display = "none";
+        });
+      } else {
+        throw new Error(result.message || "Gagal menyimpan data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      showToast(error.message, "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Simpan";
+    }
+  });
+  
+  // Helper function to convert file to base64
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || file.size === 0) {
+        resolve(null);
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = error => reject(error);
     });
   }
 });
