@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const keluhanForm = document.getElementById("form-keluhan");
+  const toast = document.getElementById("toast");
+  const toastIcon = toast?.querySelector(".toast-icon");
+  const toastMessage = toast?.querySelector(".toast-message");
+
   // Toast notification function
   function showToast(message, type = "success", onClick = null) {
-    const toast = document.getElementById("toast");
-    const toastIcon = toast?.querySelector(".toast-icon");
-    const toastMessage = toast?.querySelector(".toast-message");
-    
     if (!toast) return;
 
     toastMessage.textContent = message;
@@ -27,52 +28,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Image preview functionality
-  function setupImagePreview(input, previewId) {
-    const preview = document.getElementById(previewId);
-    input.addEventListener('change', function(e) {
-      if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          if (!preview) {
-            const newPreview = document.createElement('img');
-            newPreview.id = previewId;
-            newPreview.className = 'preview-image';
-            newPreview.src = e.target.result;
-            input.parentNode.appendChild(newPreview);
-          } else {
-            preview.src = e.target.result;
-          }
-        }
-        reader.readAsDataURL(this.files[0]);
-      }
-    });
-  }
-
-  // Add repair entry
+  // === TAMBAH INPUT PERBAIKAN ===
   document.getElementById("btn-tambah")?.addEventListener("click", () => {
     const wrapper = document.getElementById("perbaikan-wrapper");
     const lastGroup = wrapper?.querySelector(".perbaikan-group:last-child");
-    if (!lastGroup) return;
+
+    if (!lastGroup) {
+      showToast("Tidak ada entri yang bisa digandakan!", "error");
+      return;
+    }
 
     const clone = lastGroup.cloneNode(true);
-    clone.querySelectorAll("input").forEach(input => {
-      input.value = "";
-      if (input.type === 'file') {
-        input.nextElementSibling?.remove(); // Remove preview if exists
-      }
-    });
+    clone.querySelectorAll("input").forEach(input => input.value = "");
     clone.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
 
-    const colors = ["primary", "success", "info", "danger", "warning"];
-    const colorIndex = wrapper.querySelectorAll(".perbaikan-group").length % colors.length;
-    clone.className = `perbaikan-group border rounded p-3 mb-3 alert alert-${colors[colorIndex]}`;
+    const alertClasses = [
+      ["alert", "alert-primary"],
+      ["alert", "alert-success"],
+      ["alert", "alert-info"],
+      ["alert", "alert-danger"],
+      ["alert", "alert-warning"]
+    ];
+
+    clone.classList.remove("alert", "alert-primary", "alert-success", "alert-info", "alert-danger", "alert-warning");
+
+    const allGroups = wrapper.querySelectorAll(".perbaikan-group");
+    const colorIndex = allGroups.length % alertClasses.length;
+    clone.classList.add(...alertClasses[colorIndex]);
 
     wrapper.appendChild(clone);
-    setupImagePreview(clone.querySelector('[name="foto_perbaikan[]"]'), `preview-perbaikan-${Date.now()}`);
   });
 
-  // Remove repair entry
+  // === HAPUS INPUT PERBAIKAN ===
   document.getElementById("perbaikan-wrapper")?.addEventListener("click", (e) => {
     if (e.target.classList.contains("btn-hapus-input")) {
       const group = e.target.closest(".perbaikan-group");
@@ -84,96 +71,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Form submission
-  const keluhanForm = document.getElementById("form-keluhan");
+  // === SUBMIT FORM KELUHAN ===
   if (keluhanForm) {
-    // Setup image previews
-    setupImagePreview(document.getElementById("foto_keluhan"), 'preview-keluhan');
-    document.querySelector('[name="foto_perbaikan[]"]') && 
-      setupImagePreview(document.querySelector('[name="foto_perbaikan[]"]'), 'preview-perbaikan');
-
-    // Change the form submission handler to this:
-    keluhanForm.addEventListener("submit", async function(e) {
+    keluhanForm.addEventListener("submit", function(e) {
       e.preventDefault();
       
-      const submitBtn = this.querySelector('[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-    
-      try {
-        const formData = new FormData(this);
-        const data = {
-          kebun: formData.get("kebun"),
-          divisi: formData.get("divisi"),
-          blok: formData.get("blok"),
-          pemanen: formData.get("pemanen"),
-          pp: formData.get("pp"),
-          tanggal: formData.get("tanggal"),
-          keluhan: formData.get("keluhan"),
-          perbaikan: []
-        };
-    
-        // Process complaint photo
-        const fotoKeluhan = document.getElementById("foto_keluhan").files[0];
-        if (fotoKeluhan) {
-          data.foto_keluhan = {
-            name: fotoKeluhan.name,
-            type: fotoKeluhan.type,
-            base64: await toBase64(fotoKeluhan)
-          };
-        }
-    
-        // Process repair entries
-        const perbaikanInputs = Array.from(document.querySelectorAll('[name="perbaikan[]"]'));
-        for (let i = 0; i < perbaikanInputs.length; i++) {
-          const perbaikanEntry = {
-            deskripsi: perbaikanInputs[i].value,
-            tanggal: document.querySelectorAll('[name="tanggal_perbaikan[]"]')[i].value,
-          };
-    
-          const fotoPerbaikan = document.querySelectorAll('[name="foto_perbaikan[]"]')[i].files[0];
-          if (fotoPerbaikan) {
-            perbaikanEntry.foto = {
-              name: fotoPerbaikan.name,
-              type: fotoPerbaikan.type,
-              base64: await toBase64(fotoPerbaikan)
-            };
-          }
-    
-          data.perbaikan.push(perbaikanEntry);
-        }
-    
-        // Submit data using FormData instead of JSON
-        const formPayload = new FormData();
-        formPayload.append('data', JSON.stringify(data));
-        
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
-          method: "POST",
-          body: formPayload
-        });
-    
-        const result = await response.text();
-        console.log("Server response:", result);
+      const formData = new FormData(keluhanForm);
+      const kebun = formData.get("kebun");
+      const divisi = formData.get("divisi");
+      const blok = formData.get("blok");
+      const pemanen = formData.get("pemanen");
+      const pp = formData.get("pp");
+      const tanggal = formData.get("tanggal");
+      const keluhan = formData.get("keluhan");
+      const fotoKeluhan = formData.get("foto_keluhan");
+      
+      const perbaikan = formData.getAll("perbaikan[]");
+      const tanggalPerbaikan = formData.getAll("tanggal_perbaikan[]");
+      const fotoPerbaikan = formData.getAll("foto_perbaikan[]");
+      
+      // Prepare data for submission
+      const data = new URLSearchParams();
+      data.append("kebun", kebun);
+      data.append("divisi", divisi);
+      data.append("blok", blok);
+      data.append("pemanen", pemanen);
+      data.append("pp", pp);
+      data.append("tanggal", tanggal);
+      data.append("keluhan", keluhan);
+      data.append("foto_keluhan", fotoKeluhan.name);
+      
+      perbaikan.forEach((desc, i) => {
+        data.append("perbaikan[]", desc);
+        data.append("tanggal_perbaikan[]", tanggalPerbaikan[i]);
+        data.append("foto_perbaikan[]", fotoPerbaikan[i]?.name || "");
+      });
+      
+      // Send to Google Apps Script
+      fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
+        method: "POST",
+        body: data
+      })
+      .then(res => res.text())
+      .then(response => {
         showToast("Keluhan berhasil disimpan", "success");
         keluhanForm.reset();
-        document.querySelectorAll('.preview-image').forEach(img => img.remove());
-      } catch (err) {
-        console.error("Error:", err);
+      })
+      .catch(err => {
         showToast("Gagal menyimpan keluhan: " + err.message, "error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Simpan";
-      }
-    });
-  }
-
-  // Convert file to base64
-  async function toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = error => reject(error);
+      });
     });
   }
 });
