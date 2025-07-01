@@ -77,40 +77,36 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       
       const formData = new FormData(keluhanForm);
-      const kebun = formData.get("kebun");
-      const divisi = formData.get("divisi");
-      const blok = formData.get("blok");
-      const pemanen = formData.get("pemanen");
-      const pp = formData.get("pp");
-      const tanggal = formData.get("tanggal");
-      const keluhan = formData.get("keluhan");
-      const fotoKeluhan = formData.get("foto_keluhan");
+      const data = {
+        kebun: formData.get("kebun"),
+        divisi: formData.get("divisi"),
+        blok: formData.get("blok"),
+        pemanen: formData.get("pemanen"),
+        pp: formData.get("pp"),
+        tanggal: formData.get("tanggal"),
+        keluhan: formData.get("keluhan"),
+        foto_keluhan: formData.get("foto_keluhan").name,
+        perbaikan: [],
+        tanggal_perbaikan: [],
+        foto_perbaikan: []
+      };
       
-      const perbaikan = formData.getAll("perbaikan[]");
-      const tanggalPerbaikan = formData.getAll("tanggal_perbaikan[]");
-      const fotoPerbaikan = formData.getAll("foto_perbaikan[]");
-      
-      // Prepare data for submission
-      const data = new URLSearchParams();
-      data.append("kebun", kebun);
-      data.append("divisi", divisi);
-      data.append("blok", blok);
-      data.append("pemanen", pemanen);
-      data.append("pp", pp);
-      data.append("tanggal", tanggal);
-      data.append("keluhan", keluhan);
-      data.append("foto_keluhan", fotoKeluhan.name);
-      
-      perbaikan.forEach((desc, i) => {
-        data.append("perbaikan[]", desc);
-        data.append("tanggal_perbaikan[]", tanggalPerbaikan[i]);
-        data.append("foto_perbaikan[]", fotoPerbaikan[i]?.name || "");
+      // Get all repair entries
+      const perbaikanInputs = document.querySelectorAll('[name="perbaikan[]"]');
+      perbaikanInputs.forEach((input, index) => {
+        data.perbaikan.push(input.value);
+        data.tanggal_perbaikan.push(document.querySelectorAll('[name="tanggal_perbaikan[]"]')[index].value);
+        const fotoInput = document.querySelectorAll('[name="foto_perbaikan[]"]')[index];
+        data.foto_perbaikan.push(fotoInput.files[0]?.name || "");
       });
       
       // Send to Google Apps Script
       fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
         method: "POST",
-        body: data
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
       })
       .then(res => res.text())
       .then(response => {
