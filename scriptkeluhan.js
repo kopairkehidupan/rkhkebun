@@ -92,13 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('[name="foto_perbaikan[]"]') && 
       setupImagePreview(document.querySelector('[name="foto_perbaikan[]"]'), 'preview-perbaikan');
 
+    // Change the form submission handler to this:
     keluhanForm.addEventListener("submit", async function(e) {
       e.preventDefault();
       
       const submitBtn = this.querySelector('[type="submit"]');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
-
+    
       try {
         const formData = new FormData(this);
         const data = {
@@ -111,17 +112,17 @@ document.addEventListener("DOMContentLoaded", () => {
           keluhan: formData.get("keluhan"),
           perbaikan: []
         };
-
+    
         // Process complaint photo
-        const fotoKeluhan = formData.get("foto_keluhan");
-        if (fotoKeluhan.size > 0) {
+        const fotoKeluhan = document.getElementById("foto_keluhan").files[0];
+        if (fotoKeluhan) {
           data.foto_keluhan = {
             name: fotoKeluhan.name,
             type: fotoKeluhan.type,
             base64: await toBase64(fotoKeluhan)
           };
         }
-
+    
         // Process repair entries
         const perbaikanInputs = Array.from(document.querySelectorAll('[name="perbaikan[]"]'));
         for (let i = 0; i < perbaikanInputs.length; i++) {
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
             deskripsi: perbaikanInputs[i].value,
             tanggal: document.querySelectorAll('[name="tanggal_perbaikan[]"]')[i].value,
           };
-
+    
           const fotoPerbaikan = document.querySelectorAll('[name="foto_perbaikan[]"]')[i].files[0];
           if (fotoPerbaikan) {
             perbaikanEntry.foto = {
@@ -138,21 +139,21 @@ document.addEventListener("DOMContentLoaded", () => {
               base64: await toBase64(fotoPerbaikan)
             };
           }
-
+    
           data.perbaikan.push(perbaikanEntry);
         }
-
-        // Submit data
+    
+        // Submit data using FormData instead of JSON
+        const formPayload = new FormData();
+        formPayload.append('data', JSON.stringify(data));
+        
         const response = await fetch("https://script.google.com/macros/s/AKfycbzpf3tKfxTKMLUH_JN5zG0OiqgVlXzY2MER40uQGCgCSptjsSsazHhdLF8FTNyTdKJlTw/exec", {
-         method: "POST",
-         mode: "no-cors", // Add this line
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(data)
-         });
-
+          method: "POST",
+          body: formPayload
+        });
+    
         const result = await response.text();
+        console.log("Server response:", result);
         showToast("Keluhan berhasil disimpan", "success");
         keluhanForm.reset();
         document.querySelectorAll('.preview-image').forEach(img => img.remove());
